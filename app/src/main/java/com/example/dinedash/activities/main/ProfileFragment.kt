@@ -12,11 +12,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.isNotEmpty
 import com.example.dinedash.databinding.FragmentProfileBinding
+import com.example.dinedash.models.FireStoreClass
 import com.example.dinedash.models.User
+import com.example.dinedash.utils.Constants
+import com.example.dinedash.utils.Constants.FEMALE
+import com.example.dinedash.utils.Constants.GENDER
+import com.example.dinedash.utils.Constants.MALE
+import com.example.dinedash.utils.Constants.MOBILE
 import com.example.dinedash.utils.Constants.PICK_IMAGE_REQUEST_CODE
 import com.example.dinedash.utils.Constants.READ_STORAGE_PERMISSION_CODE
 import com.example.dinedash.utils.Constants.showImageChooser
+import com.example.dinedash.utils.DineDashProgressBar
 import com.example.dinedash.utils.DineDashSnackBar
 import com.example.dinedash.utils.GlideLoader
 
@@ -28,6 +36,7 @@ import com.example.dinedash.utils.GlideLoader
 class ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private var user : User? = null
+    private lateinit var userHashMap: HashMap<String, Any>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +63,17 @@ class ProfileFragment : Fragment() {
                 lastNameEt.setText(user!!.lastName)
                 emailIdEt.isEnabled = false
                 emailIdEt.setText(user!!.email)
+                if (user!!.mobile.isNotEmpty()){
+                    phoneNumberEt.setText(user!!.mobile)
+                    phoneNumberEt.isEnabled=false
+                }
+                if (user!!.gender.isNotEmpty()){
+                    if (user!!.gender == MALE){
+                        genderMale.isChecked = true
+                    }else{
+                        genderFemale.isChecked = true
+                    }
+                }
             }
             profilePicture.setOnClickListener {
                 if(ContextCompat.checkSelfPermission(requireContext(),
@@ -66,6 +86,26 @@ class ProfileFragment : Fragment() {
                         arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
                         READ_STORAGE_PERMISSION_CODE )
                 }
+            }
+            saveButton.setOnClickListener {
+                updateDetails()
+                DineDashProgressBar.show(requireContext())
+                FireStoreClass().updateUserProfileData(this@ProfileFragment,userHashMap)
+            }
+        }
+    }
+
+    private fun updateDetails() {
+        userHashMap = HashMap()
+        binding.apply {
+            if (phoneNumber.isNotEmpty()){
+                val mobileNumber = phoneNumberEt.text.toString().trim { it <= ' ' }
+                userHashMap[MOBILE] = mobileNumber
+            }
+            if (genderMale.isChecked){
+                userHashMap[GENDER] = MALE
+            }else {
+                userHashMap[GENDER] = FEMALE
             }
         }
     }

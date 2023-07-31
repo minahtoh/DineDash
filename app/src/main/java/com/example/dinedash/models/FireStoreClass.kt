@@ -1,12 +1,17 @@
 package com.example.dinedash.models
 
 import android.app.Activity
+import android.content.ContentValues.TAG
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.example.dinedash.R
 import com.example.dinedash.activities.main.MainActivity
+import com.example.dinedash.activities.main.ProfileFragment
+import com.example.dinedash.activities.main.ProfileFragmentDirections
 import com.example.dinedash.utils.Constants.USERS
 import com.example.dinedash.utils.DineDashProgressBar
 import com.example.dinedash.utils.DineDashSnackBar
@@ -53,6 +58,28 @@ class FireStoreClass {
             .addOnFailureListener {
                 Toast.makeText(activity.baseContext,"Error ${it.message}", Toast.LENGTH_SHORT)
                     .show()
+            }
+    }
+
+    fun updateUserProfileData( fragment: Fragment, userHashMap: HashMap<String,Any>){
+        mFireStore.collection(USERS)
+            .document(getUserId())
+            .update(userHashMap)
+            .addOnSuccessListener {
+                DineDashProgressBar.hide()
+                when(fragment){
+                    is ProfileFragment-> {
+                        val action = ProfileFragmentDirections.actionProfileFragmentToHomeFragment()
+                        fragment.findNavController().navigate(action)
+                    }
+                }
+                Toast.makeText(fragment.requireContext(),"Details updated successfully!", Toast.LENGTH_SHORT).show()
+
+            }
+            .addOnFailureListener {
+                DineDashProgressBar.hide()
+                Toast.makeText(fragment.requireContext(),"Error updating details", Toast.LENGTH_SHORT).show()
+                Log.e(TAG, "updateUserProfileData: ${it.message}")
             }
     }
 

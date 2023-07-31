@@ -91,6 +91,7 @@
         <com.example.dinedash.utils.DineDashEditTextView
             android:id="@+id/phone_number_et"
             android:layout_width="match_parent"
+            android:inputType="phone"
             android:layout_height="match_parent"/>
     </com.google.android.material.textfield.TextInputLayout>
     <RadioGroup
@@ -102,6 +103,7 @@
         android:layout_marginTop="20dp"
         android:orientation="horizontal">
         <com.example.dinedash.utils.DineDashRadioButton
+            android:id="@+id/gender_male"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -111,6 +113,7 @@
             android:text="Male"
             android:textAlignment="center"/>
         <com.example.dinedash.utils.DineDashRadioButton
+            android:id="@+id/gender_female"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="1"
