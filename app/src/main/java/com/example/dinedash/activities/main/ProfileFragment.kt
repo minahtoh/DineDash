@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.isNotEmpty
+import com.example.dinedash.activities.SettingsActivity
 import com.example.dinedash.databinding.FragmentProfileBinding
 import com.example.dinedash.models.FireStoreClass
 import com.example.dinedash.models.User
@@ -91,6 +92,11 @@ class ProfileFragment : Fragment() {
                 updateDetails()
                 DineDashProgressBar.show(requireContext())
                 FireStoreClass().updateUserProfileData(this@ProfileFragment,userHashMap)
+            }
+
+            settingsButton.setOnClickListener {
+                val intent = Intent(requireContext(), SettingsActivity::class.java)
+                startActivity(intent)
             }
         }
     }

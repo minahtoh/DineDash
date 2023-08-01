@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activities.main.HomeFragment">
+    tools:context=".activities.main.ProductsFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <androidx.appcompat.widget.Toolbar
@@ -16,7 +16,7 @@
         <com.example.dinedash.utils.DineDashTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="HOME"
+            android:text="PRODUCTS"
             android:textColor="@color/md_theme_dark_onTertiary"
             android:textSize="25sp"
             android:textStyle="bold"

@@ -19,6 +19,13 @@
             android:layout_gravity="center"
             android:textColor="@color/md_theme_dark_onTertiary"
             android:textSize="25sp"/>
+        <ImageView
+            android:id="@+id/settingsButton"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/baseline_settings_24"
+            android:layout_gravity="end"
+            android:layout_marginEnd="20dp"/>
     </androidx.appcompat.widget.Toolbar>
    <ImageView
        android:id="@+id/profile_picture"
