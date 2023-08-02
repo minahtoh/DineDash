@@ -82,5 +82,4 @@ class FireStoreClass {
                 Log.e(TAG, "updateUserProfileData: ${it.message}")
             }
     }
-
 }
