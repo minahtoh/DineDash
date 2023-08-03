@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.dinedash.R
 import com.example.dinedash.databinding.FragmentHomeBinding
+import com.example.dinedash.models.ProductCategory
+import com.example.dinedash.recyclers.ProductsRecycler
 
 
 /**
@@ -18,6 +21,7 @@ import com.example.dinedash.databinding.FragmentHomeBinding
  */
 class HomeFragment : Fragment() {
     private lateinit var binding: FragmentHomeBinding
+    private lateinit var recycler: ProductsRecycler
     private var backPressedTime :Long = 0
 
     override fun onCreateView(
@@ -32,7 +36,30 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         handleBackButton()
+        recycler = ProductsRecycler(getProductCategoryList())
+        binding.productTypeRecycler.apply {
+            adapter = recycler
+            layoutManager = GridLayoutManager(requireContext(),4)
+        }
 
+
+    }
+
+    private fun getProductCategoryList():List<ProductCategory> {
+        return listOf(
+            ProductCategory(null,"Television",null),
+            ProductCategory(null,"Phones",null),
+            ProductCategory(null,"Food",null),
+            ProductCategory(null,"Fashion",null),
+            ProductCategory(null,"Jewellery",null),
+            ProductCategory(null,"Electronics",null),
+            ProductCategory(null,"Sports",null),
+            ProductCategory(null,"Groceries",null),
+            ProductCategory(null,"Shoes",null),
+            ProductCategory(null,"Airtime",null),
+            ProductCategory(null,"Wristwatches",null),
+            ProductCategory(null,"Laptops",null),
+        )
     }
 
     private fun handleBackButton() {
