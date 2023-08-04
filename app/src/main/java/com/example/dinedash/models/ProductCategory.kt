@@ -1,7 +1,8 @@
 package com.example.dinedash.models
 
 data class ProductCategory(
-    val products : List<String>?,
+    val products : List<Product>?,
     val type: String?,
-    val picture: String?
+    val picture: String?,
+    var isExpandable : Boolean = false
 )
