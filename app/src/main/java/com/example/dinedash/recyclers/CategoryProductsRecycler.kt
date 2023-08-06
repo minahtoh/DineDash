@@ -32,7 +32,7 @@ class CategoryProductsRecycler(private val categoriesList: List<ProductCategory>
             }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TheViewHolder {
-       return TheViewHolder(ProductParentBinding.inflate(LayoutInflater.from(parent.context)))
+       return TheViewHolder(ProductParentBinding.inflate(LayoutInflater.from(parent.context),parent,false))
     }
 
     override fun getItemCount(): Int {

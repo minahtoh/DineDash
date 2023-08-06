@@ -55,21 +55,20 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="3dp"/>
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/trending_food_recycler"
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/trending_food_VP"
             android:layout_width="match_parent"
             android:layout_height="180dp"
             app:layout_constraintTop_toBottomOf="@+id/divider1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            tools:listitem="@layout/product_info"
             android:orientation="horizontal"
             android:layout_marginTop="10dp"/>
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/divider2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/trending_food_recycler"
+            app:layout_constraintTop_toBottomOf="@+id/trending_food_VP"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="3dp"/>
