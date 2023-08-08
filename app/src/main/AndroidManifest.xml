@@ -19,7 +19,7 @@
             android:name=".activities.SettingsActivity"
             android:exported="false"
             android:label="Settings"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activities.login.LoginActivity"
             android:exported="false"

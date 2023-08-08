@@ -3,6 +3,7 @@ package com.example.dinedash.models
 import android.app.Activity
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -13,11 +14,14 @@ import com.example.dinedash.activities.main.MainActivity
 import com.example.dinedash.activities.main.ProfileFragment
 import com.example.dinedash.activities.main.ProfileFragmentDirections
 import com.example.dinedash.utils.Constants.USERS
+import com.example.dinedash.utils.Constants.getFileExtension
 import com.example.dinedash.utils.DineDashProgressBar
 import com.example.dinedash.utils.DineDashSnackBar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 
 
 class FireStoreClass {
@@ -80,6 +84,26 @@ class FireStoreClass {
                 DineDashProgressBar.hide()
                 Toast.makeText(fragment.requireContext(),"Error updating details", Toast.LENGTH_SHORT).show()
                 Log.e(TAG, "updateUserProfileData: ${it.message}")
+            }
+    }
+
+    fun uploadImageToCloud(activity: Activity, imageFileUri : Uri?){
+        val sRef: StorageReference =FirebaseStorage.getInstance().reference
+            .child("User" + System.currentTimeMillis() + "." + getFileExtension(activity,imageFileUri))
+
+        sRef.putFile(imageFileUri!!)
+            .addOnSuccessListener { taskSnapshot->
+                Log.e(TAG, "uploadImageToCloud:${taskSnapshot.metadata!!.reference!!.downloadUrl} ", )
+                taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
+
+                    Toast.makeText(activity.baseContext,"Image upload successful", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+            }
+            .addOnFailureListener {
+                    Toast.makeText(activity.baseContext,"Image upload failed", Toast.LENGTH_SHORT)
+                        .show()
             }
     }
 }
