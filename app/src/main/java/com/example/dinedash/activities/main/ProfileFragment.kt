@@ -93,7 +93,7 @@ class ProfileFragment : Fragment() {
             saveButton.setOnClickListener {
                updateDetails()
                 if (imageUri !=null){
-                    FireStoreClass().uploadImageToCloud(requireActivity(),imageUri)}
+                    FireStoreClass().uploadImageToCloud(requireActivity(),imageUri,this@ProfileFragment)}
                 DineDashProgressBar.show(requireContext())
                FireStoreClass().updateUserProfileData(this@ProfileFragment,userHashMap)
             }
@@ -118,7 +118,7 @@ class ProfileFragment : Fragment() {
             }else {
                 userHashMap[GENDER] = FEMALE
             }
-            if (!imageUrl.isNullOrEmpty()){
+            if (imageUrl != null){
                 userHashMap[PROFILE_PICTURE] = imageUrl!!
             }
         }
@@ -169,6 +169,8 @@ class ProfileFragment : Fragment() {
 
     fun updateToFirebase(url:String) {
         //TODO: IMPLEMENT
+        imageUrl = url
+       // Toast.makeText(requireContext(),"updated to fayabasee", Toast.LENGTH_SHORT).show()
     }
 
 

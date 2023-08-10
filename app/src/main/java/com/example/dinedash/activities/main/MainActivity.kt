@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         val bundle = intent.extras
         val user = bundle?.getParcelable<User>("user")
         val destination = navController.graph.findNode(R.id.profileFragment)
-        destination?.addArgument("user", NavArgument.Builder().setDefaultValue(user).build())
+        //destination?.addArgument("user", NavArgument.Builder().setDefaultValue(user).build())
 
 
 

@@ -1,6 +1,9 @@
 package com.example.dinedash.activities.main
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
 import androidx.fragment.app.Fragment
@@ -20,6 +23,7 @@ import com.example.dinedash.models.ProductCategory
 import com.example.dinedash.models.TrendingFood
 import com.example.dinedash.recyclers.ProductsRecycler
 import com.example.dinedash.recyclers.TrendingFoodViewPager
+import java.util.Calendar
 import kotlin.collections.ArrayList
 import kotlin.math.abs
 
@@ -39,6 +43,7 @@ class HomeFragment : Fragment() {
         trendingViewPager.currentItem = trendingViewPager.currentItem + 1
     }
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,6 +59,7 @@ class HomeFragment : Fragment() {
         handler = Handler(Looper.myLooper()!!)
         trendingViewPager = binding.trendingFoodVP
         setupTransformer()
+        setupCountdown()
         binding.trendingFoodVP.apply {
             adapter = TrendingFoodViewPager(getTrendingList(),trendingViewPager)
             offscreenPageLimit = 3
@@ -82,6 +88,7 @@ class HomeFragment : Fragment() {
 
     }
 
+
     override fun onPause() {
         super.onPause()
         handler.removeCallbacks(runnable)
@@ -97,6 +104,49 @@ class HomeFragment : Fragment() {
         handler.removeCallbacks(runnable)
     }
 
+
+    private fun setupCountdown(){
+        val sharedPreferences = requireContext().getSharedPreferences("CountdownPrefs", Context.MODE_PRIVATE)
+        val editor = sharedPreferences.edit()
+
+//          Calculate time remaining until next 12 AM
+        val currentTime = System.currentTimeMillis()
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = currentTime
+        calendar.set(Calendar.HOUR_OF_DAY, 0)
+        calendar.set(Calendar.MINUTE, 0)
+        calendar.set(Calendar.SECOND, 0)
+        calendar.set(Calendar.MILLISECOND, 0)
+        if (calendar.timeInMillis <= currentTime) {
+            calendar.add(Calendar.DAY_OF_MONTH, 1)
+        }
+
+        val timeUntilMidnight = calendar.timeInMillis - currentTime
+
+//          Start the CountDownTimer
+        val countdownTimer = object : CountDownTimer(timeUntilMidnight, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                // Update UI with the remaining time
+                val hours = millisUntilFinished / (60 * 60 * 1000)
+                val minutes = (millisUntilFinished % (60 * 60 * 1000)) / (60 * 1000)
+                val seconds = (millisUntilFinished % (60 * 1000)) / 1000
+
+                val remainingTime = String.format("%02d:%02d:%02d", hours, minutes, seconds)
+                binding.countdownTv.text = "Time Left: $remainingTime"
+            }
+
+            override fun onFinish() {
+                // Countdown finished
+                binding.countdownTv.text = "Time Left: 00:00:00"
+            }
+        }
+
+        countdownTimer.start()
+
+//          Store the remaining time in SharedPreferences
+        editor.putLong("remainingTime", timeUntilMidnight)
+        editor.apply()
+    }
 
 
 

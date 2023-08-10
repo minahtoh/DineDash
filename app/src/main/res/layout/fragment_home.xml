@@ -142,6 +142,7 @@
                     android:layout_marginStart="10dp"
                     android:textColor="@color/md_theme_dark_onPrimaryContainer"/>
                 <com.example.dinedash.utils.DineDashTextView
+                    android:id="@+id/countdown_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@+id/flash_sales"

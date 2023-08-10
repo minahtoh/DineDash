@@ -87,7 +87,7 @@ class FireStoreClass {
             }
     }
 
-    fun uploadImageToCloud(activity: Activity, imageFileUri : Uri?){
+    fun uploadImageToCloud(activity: Activity, imageFileUri : Uri?, fragment: Fragment){
         val sRef: StorageReference =FirebaseStorage.getInstance().reference
             .child("User" + System.currentTimeMillis() + "." + getFileExtension(activity,imageFileUri))
 
@@ -95,7 +95,11 @@ class FireStoreClass {
             .addOnSuccessListener { taskSnapshot->
                 Log.e(TAG, "uploadImageToCloud:${taskSnapshot.metadata!!.reference!!.downloadUrl} ", )
                 taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
-
+                    when(fragment){
+                        is ProfileFragment ->{
+                            fragment.updateToFirebase(it.toString())
+                        }
+                    }
                     Toast.makeText(activity.baseContext,"Image upload successful", Toast.LENGTH_SHORT)
                         .show()
                 }
