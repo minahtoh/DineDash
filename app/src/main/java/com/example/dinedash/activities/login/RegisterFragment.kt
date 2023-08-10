@@ -11,6 +11,7 @@ import com.example.dinedash.models.FireStoreClass
 import com.example.dinedash.models.User
 import com.example.dinedash.utils.DineDashProgressBar
 import com.example.dinedash.utils.DineDashSnackBar
+import com.example.dinedash.main.login.RegisterFragmentDirections
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth

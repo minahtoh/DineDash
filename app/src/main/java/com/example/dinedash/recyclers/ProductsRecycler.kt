@@ -3,17 +3,27 @@ package com.example.dinedash.recyclers
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.dinedash.databinding.ProductTypeBinding
-import com.example.dinedash.models.ProductCategory
+import com.example.dinedash.models.ProductType
 
-class ProductsRecycler(private val productList: List<ProductCategory>)
-    :RecyclerView.Adapter<ProductsRecycler.ProductsViewHolder>() {
+class ProductsRecycler:RecyclerView.Adapter<ProductsRecycler.ProductsViewHolder>() {
+
+    private val items: MutableList<ProductType> = mutableListOf()
+
+    fun submitList(newItems: List<ProductType>) {
+        items.clear()
+        items.addAll(newItems)
+        notifyDataSetChanged()
+    }
 
     inner class ProductsViewHolder(var binding: ProductTypeBinding):
         RecyclerView.ViewHolder(binding.root){
-            fun bind(productType: ProductCategory){
+            fun bind(productType: ProductType){
                 binding.apply {
-                    productName.text = productType.type
+                    productName.text = productType.productID
+                    Glide.with(itemView.context).load(productType.productImage)
+                        .into(productImage)
                 }
             }
     }
@@ -23,11 +33,11 @@ class ProductsRecycler(private val productList: List<ProductCategory>)
     }
 
     override fun getItemCount(): Int {
-        return productList.size
+        return items.size
     }
 
     override fun onBindViewHolder(holder: ProductsViewHolder, position: Int) {
-        val product = productList[position]
+        val product = items[position]
         holder.bind(product)
     }
 }

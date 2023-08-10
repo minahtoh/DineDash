@@ -9,14 +9,12 @@ import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.example.dinedash.R
 import com.example.dinedash.activities.main.MainActivity
 import com.example.dinedash.activities.main.ProfileFragment
-import com.example.dinedash.activities.main.ProfileFragmentDirections
+import com.example.dinedash.main.ProfileFragmentDirections
 import com.example.dinedash.utils.Constants.USERS
 import com.example.dinedash.utils.Constants.getFileExtension
 import com.example.dinedash.utils.DineDashProgressBar
-import com.example.dinedash.utils.DineDashSnackBar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions

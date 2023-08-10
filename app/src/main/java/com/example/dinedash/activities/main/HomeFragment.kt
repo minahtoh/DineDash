@@ -12,6 +12,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -23,6 +25,7 @@ import com.example.dinedash.models.ProductCategory
 import com.example.dinedash.models.TrendingFood
 import com.example.dinedash.recyclers.ProductsRecycler
 import com.example.dinedash.recyclers.TrendingFoodViewPager
+import com.example.dinedash.viewmodel.DineDashViewModel
 import java.util.Calendar
 import kotlin.collections.ArrayList
 import kotlin.math.abs
@@ -38,6 +41,7 @@ class HomeFragment : Fragment() {
     private lateinit var recycler: ProductsRecycler
     private lateinit var trendingViewPager: ViewPager2
     private lateinit var handler : Handler
+    private val theViewModel: DineDashViewModel by activityViewModels()
     private var backPressedTime : Long = 0
     private val runnable = Runnable{
         trendingViewPager.currentItem = trendingViewPager.currentItem + 1
@@ -80,10 +84,17 @@ class HomeFragment : Fragment() {
             }
             )
         }
-        recycler = ProductsRecycler(getProductCategoryList())
+
+        recycler = ProductsRecycler()
         binding.productTypeRecycler.apply {
             adapter = recycler
             layoutManager = GridLayoutManager(requireContext(),4)
+            theViewModel.apply {
+                getProductCategory(this@HomeFragment)
+                productCategory.observe(viewLifecycleOwner){
+                    recycler.submitList(it)
+                }
+            }
         }
 
     }
@@ -173,24 +184,6 @@ class HomeFragment : Fragment() {
             TrendingFood(R.drawable.pexels_tranmautritam_61180, null),
         )
         return ArrayList(list)
-    }
-
-
-    private fun getProductCategoryList():List<ProductCategory> {
-        return listOf(
-            ProductCategory(null,"Television",null),
-            ProductCategory(null,"Phones",null),
-            ProductCategory(null,"Food",null),
-            ProductCategory(null,"Fashion",null),
-            ProductCategory(null,"Jewellery",null),
-            ProductCategory(null,"Electronics",null),
-            ProductCategory(null,"Sports",null),
-            ProductCategory(null,"Groceries",null),
-            ProductCategory(null,"Shoes",null),
-            ProductCategory(null,"Airtime",null),
-            ProductCategory(null,"Wristwatches",null),
-            ProductCategory(null,"Laptops",null),
-        )
     }
 
 
