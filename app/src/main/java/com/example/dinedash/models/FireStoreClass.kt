@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.dinedash.activities.main.MainActivity
 import com.example.dinedash.activities.main.ProfileFragment
-import com.example.dinedash.main.ProfileFragmentDirections
+import com.example.dinedash.activities.main.ProfileFragmentDirections
 import com.example.dinedash.utils.Constants.USERS
 import com.example.dinedash.utils.Constants.getFileExtension
 import com.example.dinedash.utils.DineDashProgressBar
@@ -91,7 +91,10 @@ class FireStoreClass {
 
         sRef.putFile(imageFileUri!!)
             .addOnSuccessListener { taskSnapshot->
-                Log.e(TAG, "uploadImageToCloud:${taskSnapshot.metadata!!.reference!!.downloadUrl} ", )
+                Log.e(
+                    TAG,
+                    "uploadImageToCloud:${taskSnapshot.metadata!!.reference!!.downloadUrl} ",
+                )
                 taskSnapshot.metadata!!.reference!!.downloadUrl.addOnSuccessListener {
                     when(fragment){
                         is ProfileFragment ->{

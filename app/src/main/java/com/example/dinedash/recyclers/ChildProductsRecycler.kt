@@ -12,7 +12,7 @@ class ChildProductsRecycler(private val productList:List<Product>):
             RecyclerView.ViewHolder(binding.root){
                 fun bind(product: Product){
                     binding.apply {
-                        productName.text = product.name
+                        productName.text = product.productBrandName
 
                     }
                 }

@@ -10,7 +10,6 @@ import com.example.dinedash.databinding.FragmentLoginBinding
 import com.example.dinedash.models.FireStoreClass
 import com.example.dinedash.utils.DineDashProgressBar
 import com.example.dinedash.utils.DineDashSnackBar
-import com.example.dinedash.main.login.LoginFragmentDirections
 import com.google.firebase.auth.FirebaseAuth
 
 

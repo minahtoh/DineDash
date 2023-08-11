@@ -6,9 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.dinedash.R
 import com.example.dinedash.databinding.FragmentProductsBinding
-import com.example.dinedash.databinding.FragmentProfileBinding
 import com.example.dinedash.models.Product
 import com.example.dinedash.models.ProductCategory
 import com.example.dinedash.recyclers.CategoryProductsRecycler

@@ -97,6 +97,10 @@ class HomeFragment : Fragment() {
             }
         }
 
+        binding.uploadButton.setOnClickListener {
+            theViewModel.uploadGoods(this)
+        }
+
     }
 
 
