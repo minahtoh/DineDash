@@ -8,16 +8,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.dinedash.databinding.ProductParentBinding
 import com.example.dinedash.models.ProductCategory
 
-class CategoryProductsRecycler(private val categoriesList: List<ProductCategory>):
-    RecyclerView.Adapter<CategoryProductsRecycler.TheViewHolder>() {
+class CategoryProductsRecycler : RecyclerView.Adapter<CategoryProductsRecycler.TheViewHolder>() {
+
+    private val categoriesList: MutableList<ProductCategory> = mutableListOf()
+
+    fun submitList(newItems: List<ProductCategory>) {
+        categoriesList.clear()
+        categoriesList.addAll(newItems)
+        notifyDataSetChanged()
+    }
     inner class TheViewHolder(var binding:ProductParentBinding):
             RecyclerView.ViewHolder(binding.root){
                 fun bind(product: ProductCategory){
-                    val adapter = product.products?.let { ChildProductsRecycler(it) }
+                    val adapter = product.productAvailable?.let { ChildProductsRecycler(it) }
                     val isExpandable = product.isExpandable
 
                     binding.apply {
-                        productTitle.text = product.type
+                        productTitle.text = product.productID
                         productChildRecycler.setHasFixedSize(true)
                         productChildRecycler.layoutManager = GridLayoutManager(itemView.context, 3)
                         productChildRecycler.adapter = adapter

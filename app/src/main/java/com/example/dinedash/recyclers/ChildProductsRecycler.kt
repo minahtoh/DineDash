@@ -3,6 +3,7 @@ package com.example.dinedash.recyclers
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.dinedash.databinding.ProductTypeBinding
 import com.example.dinedash.models.Product
 
@@ -13,7 +14,7 @@ class ChildProductsRecycler(private val productList:List<Product>):
                 fun bind(product: Product){
                     binding.apply {
                         productName.text = product.productBrandName
-
+                        Glide.with(itemView).load(product.productImage).into(productImage)
                     }
                 }
             }

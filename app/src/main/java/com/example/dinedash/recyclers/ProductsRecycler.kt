@@ -5,13 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.dinedash.databinding.ProductTypeBinding
+import com.example.dinedash.models.ProductCategory
 import com.example.dinedash.models.ProductType
 
 class ProductsRecycler:RecyclerView.Adapter<ProductsRecycler.ProductsViewHolder>() {
 
-    private val items: MutableList<ProductType> = mutableListOf()
+    private val items: MutableList<ProductCategory> = mutableListOf()
 
-    fun submitList(newItems: List<ProductType>) {
+    fun submitList(newItems: List<ProductCategory>) {
         items.clear()
         items.addAll(newItems)
         notifyDataSetChanged()
@@ -19,7 +20,7 @@ class ProductsRecycler:RecyclerView.Adapter<ProductsRecycler.ProductsViewHolder>
 
     inner class ProductsViewHolder(var binding: ProductTypeBinding):
         RecyclerView.ViewHolder(binding.root){
-            fun bind(productType: ProductType){
+            fun bind(productType: ProductCategory){
                 binding.apply {
                     productName.text = productType.productID
                     Glide.with(itemView.context).load(productType.productImage)

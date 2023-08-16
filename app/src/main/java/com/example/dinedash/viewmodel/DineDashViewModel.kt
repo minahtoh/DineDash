@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.dinedash.models.Product
+import com.example.dinedash.models.ProductCategory
 import com.example.dinedash.models.ProductType
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
@@ -16,19 +17,27 @@ import kotlinx.coroutines.tasks.await
 class DineDashViewModel: ViewModel() {
     private val TAG = "ViewModel"
     private val mFireStore = FirebaseFirestore.getInstance()
-    private val _productCategory = MutableLiveData<List<ProductType>>()
-    val productCategory : LiveData<List<ProductType>> = _productCategory
+    private val _productCategory = MutableLiveData<List<ProductCategory>>()
+    val productCategory : LiveData<List<ProductCategory>> = _productCategory
 
     fun getProductCategory(fragment: Fragment){
         viewModelScope.launch {
             try {
                 val snapshot = mFireStore.collection("warehouse").get().await()
-                val productList = mutableListOf<ProductType>()
+                val productList = mutableListOf<ProductCategory>()
                 for (document in snapshot){
                     val productType = document.toObject(ProductType::class.java)
-                    productList.add(productType)
+                    val products = document.reference.collection("products").get().await().toObjects(Product::class.java)
+                    val productsType = ProductCategory(
+                        document.getString("productID"),
+                        document.getString("productImage"),
+                        products
+                    )
+                    productList.add(productsType)
                 }
                 _productCategory.value = productList
+
+
 
             }catch (e:Exception){
                 Log.e(TAG, "getProductCategory: $e")
@@ -42,45 +51,45 @@ class DineDashViewModel: ViewModel() {
     fun uploadGoods(fragment: Fragment){
         val productList = listOf(
             Product(
+                "WEYON",
+                "32 Inches LED TV (32WAN) - Black +1 Year Warranty",
                 "",
-                "Men's Casual Shoes Soft Leather, Soft Sole, Breathable Shoes -Brown",
-                "",
-                5300,
-                5.0,
+                63300,
+                0.0,
                 9
             ),
             Product(
-                "A4 Fashion",
-                "Business Soft-soled Plaid Leather Shoes-P8822 Black",
+                "Amani",
+                "32 Inches LED TV Amani @promo Price + Free Gift Inside\n",
                 "",
-                23400,
+                59400,
                 0.0,
-                21
+                1
             ),
         Product(
-                "Depally",
-                "STONE DESIGNERS WEDDING SHOE BLACK",
+                "Hisense",
+                "32 Inches FHD LED TV (A5100) - Black +1 Year Warranty",
                 "",
-                17805,
+                77805,
                 5.0,
                 2
             ),
         Product(
-                "Santiago",
-                "2022 Mens Executive Business Office Casual Event Leather Formal Shoes Black",
+                "LG",
+                "32 Inch HD LED TV + Wall Hanger {2 Year Warranty}",
                 "",
-                1750549,
+                70549,
                 5.0,
                 5
             ),
         Product(
-                "Varrati",
-            "Mens Executive Shoes Italian Leather Shoes Coffee Brown",
+                "Skyrun",
+            "32 Inches LED HD TV (32XM/N68D) - Black + 1 Year Warranty",
                 "",
                 11000,
                 0.0,
                 12
-            ),
+            ),/*
         Product(
                 "FOLLETEL",
                 "2021 Men Office Oxford Dress Patterned Shoe F8 - Blue",
@@ -96,7 +105,7 @@ class DineDashViewModel: ViewModel() {
                 4500,
                 4.5,
                 106
-            ),/*
+            ),
         Product(
                 "DELL",
                 "XPS 13 PLUS 9320,CORE I7-1260P,2TB SSD/32GB RAM,13.4\" OLED TOUCHSCREEN,BACKLIT,FINGERPRINT,WIN 11",
@@ -133,7 +142,7 @@ class DineDashViewModel: ViewModel() {
                 "numberLeft" to product.numberLeft,
             )
 
-            mFireStore.collection("/warehouse/Shoes/products").add(productMap)
+            mFireStore.collection("/warehouse/Television/products").add(productMap)
                 .addOnSuccessListener {
                     Toast.makeText(fragment.requireContext(), "Successfully uploaded $it", Toast.LENGTH_SHORT)
                         .show()
@@ -142,8 +151,6 @@ class DineDashViewModel: ViewModel() {
                         .show()
                 }
         }
-
-
 
     }
 }

@@ -70,10 +70,10 @@ class HomeFragment : Fragment() {
             clipToPadding = false
             clipChildren = false
             getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-            registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            registerOnPageChangeCallback(   object : ViewPager2.OnPageChangeCallback(){
                 override fun onPageSelected(position: Int) {
                     super.onPageSelected(position)
-                    if(handler !=null){
+                    if(handler != null){
                     handler.apply {
                         removeCallbacks(runnable)
                         postDelayed(runnable, 3000)
@@ -81,8 +81,7 @@ class HomeFragment : Fragment() {
                     }
 
                 }
-            }
-            )
+            } )
         }
 
         recycler = ProductsRecycler()
