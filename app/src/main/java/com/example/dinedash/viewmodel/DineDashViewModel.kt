@@ -20,6 +20,9 @@ class DineDashViewModel: ViewModel() {
     private val _productCategory = MutableLiveData<List<ProductCategory>>()
     val productCategory : LiveData<List<ProductCategory>> = _productCategory
 
+    init {
+
+    }
     fun getProductCategory(fragment: Fragment){
         viewModelScope.launch {
             try {

@@ -3,6 +3,7 @@ package com.example.dinedash.activities.main
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.NavArgument
@@ -31,6 +32,15 @@ class MainActivity : AppCompatActivity() {
         val destination = navController.graph.findNode(R.id.profileFragment)
         //destination?.addArgument("user", NavArgument.Builder().setDefaultValue(user).build())
 
+        navController.addOnDestinationChangedListener{_, destination, _ ->
+            if (destination.id == R.id.detailsFragment) {
+                // Hide the bottom navigation bar
+                binding.bottomNavView.visibility = View.GONE
+            } else {
+                // Show the bottom navigation bar for other fragments
+                binding.bottomNavView.visibility = View.VISIBLE
+            }
+        }
 
 
 

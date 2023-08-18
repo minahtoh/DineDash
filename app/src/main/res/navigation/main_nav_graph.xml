@@ -33,5 +33,19 @@
         android:id="@+id/productsFragment"
         android:name="com.example.dinedash.activities.main.ProductsFragment"
         android:label="fragment_products"
-        tools:layout="@layout/fragment_products" />
+        tools:layout="@layout/fragment_products" >
+        <action
+            android:id="@+id/action_productsFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailsFragment"
+        android:name="com.example.dinedash.activities.main.DetailsFragment"
+        android:label="fragment_details"
+        app:enterAnim="@anim/slide_in_from_right"
+        tools:layout="@layout/fragment_details" >
+        <argument
+            android:name="product"
+            app:argType="com.example.dinedash.models.Product" />
+    </fragment>
 </navigation>

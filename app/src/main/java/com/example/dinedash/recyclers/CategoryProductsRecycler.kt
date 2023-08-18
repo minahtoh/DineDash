@@ -3,8 +3,11 @@ package com.example.dinedash.recyclers
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.dinedash.activities.main.ProductsFragment
+import com.example.dinedash.activities.main.ProductsFragmentDirections
 import com.example.dinedash.databinding.ProductParentBinding
 import com.example.dinedash.models.ProductCategory
 
@@ -21,6 +24,10 @@ class CategoryProductsRecycler : RecyclerView.Adapter<CategoryProductsRecycler.T
             RecyclerView.ViewHolder(binding.root){
                 fun bind(product: ProductCategory){
                     val adapter = product.productAvailable?.let { ChildProductsRecycler(it) }
+                    adapter?.setOnItemClickListener {
+                        val action = ProductsFragmentDirections.actionProductsFragmentToDetailsFragment(it)
+                        findNavController(itemView).navigate(action)
+                    }
                     val isExpandable = product.isExpandable
 
                     binding.apply {

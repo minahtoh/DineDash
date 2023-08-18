@@ -30,5 +30,13 @@ class ChildProductsRecycler(private val productList:List<Product>):
     override fun onBindViewHolder(holder: TheViewHolder, position: Int) {
         val product = productList[position]
         holder.bind(product)
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.let { it(product) }
+        }
+    }
+
+    private var onItemClickListener:((Product)->Unit)? = null
+    fun setOnItemClickListener(listener:(Product) -> Unit){
+        onItemClickListener = listener
     }
 }
