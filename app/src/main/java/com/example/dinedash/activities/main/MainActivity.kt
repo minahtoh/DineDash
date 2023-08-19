@@ -1,23 +1,24 @@
 package com.example.dinedash.activities.main
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import androidx.core.os.bundleOf
-import androidx.navigation.NavArgument
-import androidx.navigation.NavArgumentBuilder
-import androidx.navigation.NavOptions
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.dinedash.R
 import com.example.dinedash.databinding.ActivityMainBinding
+import com.example.dinedash.db.DineDashDatabase
 import com.example.dinedash.models.User
+import com.example.dinedash.repository.DineDashRepository
+import com.example.dinedash.viewmodel.DineDashViewModel
+import com.example.dinedash.viewmodel.DineDashViewModelFactory
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
+    private lateinit var viewModel: DineDashViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         //destination?.addArgument("user", NavArgument.Builder().setDefaultValue(user).build())
 
         navController.addOnDestinationChangedListener{_, destination, _ ->
-            if (destination.id == R.id.detailsFragment) {
+            if (destination.id == R.id.detailsFragment || destination.id == R.id.cartFragment) {
                 // Hide the bottom navigation bar
                 binding.bottomNavView.visibility = View.GONE
             } else {
@@ -41,6 +42,10 @@ class MainActivity : AppCompatActivity() {
                 binding.bottomNavView.visibility = View.VISIBLE
             }
         }
+//        For viewModel implementation
+        val dineDashRepository = DineDashRepository(DineDashDatabase.getDatabase(this))
+        val dashProvider = DineDashViewModelFactory(dineDashRepository)
+        viewModel = ViewModelProvider(this, dashProvider)[DineDashViewModel::class.java]
 
 
 

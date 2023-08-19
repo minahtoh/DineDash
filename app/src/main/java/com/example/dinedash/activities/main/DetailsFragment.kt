@@ -1,15 +1,16 @@
 package com.example.dinedash.activities.main
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
-import com.example.dinedash.R
 import com.example.dinedash.databinding.FragmentDetailsBinding
+import com.example.dinedash.viewmodel.DineDashViewModel
 
 
 /**
@@ -20,6 +21,7 @@ import com.example.dinedash.databinding.FragmentDetailsBinding
 class DetailsFragment : Fragment() {
         private lateinit var binding:FragmentDetailsBinding
         private val args : DetailsFragmentArgs by navArgs()
+        private val theViewModel : DineDashViewModel by activityViewModels()
 
 
     override fun onCreateView(
@@ -49,6 +51,12 @@ class DetailsFragment : Fragment() {
             }
             backButton.setOnClickListener {
                 findNavController().navigateUp()
+            }
+            shoppingCart.setOnClickListener {
+                findNavController().navigate(DetailsFragmentDirections.actionDetailsFragmentToCartFragment())
+            }
+            buyButton.setOnClickListener {
+                theViewModel.addToCart(product, this@DetailsFragment)
             }
         }
     }
