@@ -13,5 +13,5 @@ data class Product(
     val productPrice: Long? = 0,
     val productRating: Double = 0.0,
     val numberLeft: Long? = 0,
-    var quantity : Int = 2
+    var quantity : Int = 1
 ): Serializable

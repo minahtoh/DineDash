@@ -3,13 +3,29 @@ package com.example.dinedash.repository
 import com.example.dinedash.db.DineDashDatabase
 import com.example.dinedash.models.Product
 
-class DineDashRepository(val database: DineDashDatabase) {
+class DineDashRepository(private val database: DineDashDatabase) {
 
     fun getShoppingCartList() = database.getDao().getCartList()
 
     fun getTotalProductCount() = database.getDao().getTotalPrice()
 
     fun getPrices() = database.getDao().getListOfPrices()
+
+    suspend fun increaseProductQuantity(productName:String){
+        val product = database.getDao().getProduct(productName)
+        if (product != null && product.numberLeft!! > product.quantity){
+            val newProduct = product.copy(quantity = product.quantity + 1 )
+            database.getDao().updateProduct(newProduct)
+        }
+    }
+
+    suspend fun decreaseProductQuantity(productName:String){
+        val product = database.getDao().getProduct(productName)
+        if (product != null ){
+            val newProduct = product.copy(quantity = product.quantity - 1 )
+            database.getDao().updateProduct(newProduct)
+        }
+    }
 
     suspend fun insertProduct(product: Product) {
         database.getDao().insertToCart(product)

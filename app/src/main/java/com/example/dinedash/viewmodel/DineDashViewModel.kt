@@ -22,9 +22,6 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
     private val _productCategory = MutableLiveData<List<ProductCategory>>()
     val productCategory : LiveData<List<ProductCategory>> = _productCategory
 
-    init {
-
-    }
     fun getProductCategory(fragment: Fragment){
         viewModelScope.launch {
             try {
@@ -57,6 +54,9 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
         viewModelScope.launch {
             try {
                 repository.insertProduct(product)
+                Toast.makeText(fragment.requireContext(),
+                    "Adding ${product.quantity} ${product.productItemName} to Cart!",Toast.LENGTH_SHORT)
+                    .show()
             }catch (e:Exception){
                 Toast.makeText(fragment.requireContext(),"Exception $e occurred", Toast.LENGTH_SHORT).show()
             }
@@ -79,13 +79,24 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
             }   catch (e:Exception){
                 Log.e(TAG, "clearCart: $e occurred")
             }
-
         }
     }
 
     fun getShoppingList() = repository.getShoppingCartList()
     fun getProductCount() = repository.getTotalProductCount()
     fun getPricesList() = repository.getPrices()
+
+    fun increaseQuantity(product: Product){
+        viewModelScope.launch {
+            repository.increaseProductQuantity(product.productItemName)
+        }
+    }
+
+    fun reduceQuantity(product: Product){
+        viewModelScope.launch {
+            repository.decreaseProductQuantity(product.productItemName)
+        }
+    }
 }
 
 

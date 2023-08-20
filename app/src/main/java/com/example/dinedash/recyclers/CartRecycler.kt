@@ -2,6 +2,7 @@ package com.example.dinedash.recyclers
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.dinedash.databinding.CartDisplayCardBinding
@@ -26,24 +27,31 @@ class CartRecycler(private val callback: CartItemCallback): RecyclerView.Adapter
                         deleteIcon.setOnClickListener {
                             callback.onCartItemDeleteClicked(product)
                         }
-                        addButton.setOnClickListener {
-                            if (product.numberLeft!! > product.quantity ) {
-                                product.quantity++
-                            } else {
-                                addButton.isEnabled = false
+                        addButton.apply {
+                            setOnClickListener{
+                            if (product.numberLeft!! > product.quantity){
+                                addButton.isEnabled = true
+                                callback.increaseQuantity(product)
+                                Toast.makeText(itemView.context, "Added one more", Toast.LENGTH_SHORT)
+                                    .show()
+                                } else{
+                                    Toast.makeText(itemView.context, "No more of this product available!", Toast.LENGTH_SHORT)
+                                        .show()
+                                    addButton.isEnabled = false
+                                }
                             }
                         }
                         removeButton.apply {
-                            setOnClickListener {
-                            if (product.quantity > 2){
-                                product.quantity - 1
-                                }
+                            if (product.quantity >= 2){
+                                setOnClickListener{ callback.reduceQuantity(product) }
+                            } else{
+                                removeButton.isEnabled = false
                             }
-                            if (product.quantity <= 1){
-                                isEnabled = false
-                            }
+
                         }
-                        quantityNumber.text = product.quantity.toString()
+                        quantityNumber.apply {
+                           text = product.quantity.toString()
+                        }
                     }
                 }
             }
@@ -68,4 +76,6 @@ class CartRecycler(private val callback: CartItemCallback): RecyclerView.Adapter
 
 interface CartItemCallback {
     fun onCartItemDeleteClicked(productId: Product)
+    fun increaseQuantity(product: Product)
+    fun reduceQuantity(product: Product)
 }

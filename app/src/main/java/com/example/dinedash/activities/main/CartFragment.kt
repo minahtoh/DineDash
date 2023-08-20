@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewTreeLifecycleOwner
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dinedash.databinding.FragmentCartBinding
 import com.example.dinedash.models.Product
@@ -32,6 +34,7 @@ class CartFragment : Fragment(), CartItemCallback {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentCartBinding.inflate(inflater,container,false)
+        ViewTreeLifecycleOwner.set(binding.root,viewLifecycleOwner)
         return binding.root
     }
 
@@ -55,12 +58,24 @@ class CartFragment : Fragment(), CartItemCallback {
                     text = list.sum().toString()
                 }
             }
+            backButton.setOnClickListener {
+                findNavController().navigateUp()
+            }
         }
     }
 
     override fun onCartItemDeleteClicked(productId: Product) {
         showConfirmationDialog(productId,this)
     }
+
+    override fun increaseQuantity(product: Product) {
+        theViewModel.increaseQuantity(product)
+    }
+
+    override fun reduceQuantity(product: Product) {
+        theViewModel.reduceQuantity(product)
+    }
+
 
     private fun showConfirmationDialog(product:Product, fragment: Fragment) {
         MaterialAlertDialogBuilder(requireContext())
