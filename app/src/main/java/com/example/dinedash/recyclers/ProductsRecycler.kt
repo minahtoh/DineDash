@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.dinedash.databinding.ProductTypeBinding
 import com.example.dinedash.models.ProductCategory
-import com.example.dinedash.models.ProductType
 
 class ProductsRecycler:RecyclerView.Adapter<ProductsRecycler.ProductsViewHolder>() {
 
@@ -40,5 +39,13 @@ class ProductsRecycler:RecyclerView.Adapter<ProductsRecycler.ProductsViewHolder>
     override fun onBindViewHolder(holder: ProductsViewHolder, position: Int) {
         val product = items[position]
         holder.bind(product)
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.let { it(product.productID) }
+        }
+    }
+
+    private var onItemClickListener:((String?)->Unit)? = null
+    fun setOnItemClickListener(listener:(String?) -> Unit){
+        onItemClickListener = listener
     }
 }

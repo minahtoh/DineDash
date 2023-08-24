@@ -6,12 +6,11 @@ import android.view.ViewGroup
 import androidx.navigation.Navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.dinedash.activities.main.ProductsFragment
 import com.example.dinedash.activities.main.ProductsFragmentDirections
 import com.example.dinedash.databinding.ProductParentBinding
 import com.example.dinedash.models.ProductCategory
 
-class CategoryProductsRecycler : RecyclerView.Adapter<CategoryProductsRecycler.TheViewHolder>() {
+class CategoryProductsRecycler(private val callback: ProductItemCallback) : RecyclerView.Adapter<CategoryProductsRecycler.TheViewHolder>() {
 
     private val categoriesList: MutableList<ProductCategory> = mutableListOf()
 
@@ -42,6 +41,11 @@ class CategoryProductsRecycler : RecyclerView.Adapter<CategoryProductsRecycler.T
                             notifyItemChanged(layoutPosition)
                         }
                     }
+
+                    val navProduct = product.getProductCategoryByID(categoriesList, callback.expandProductCategory() ?:"")
+                    if (navProduct != null) {
+                        navProduct.isExpandable = true
+                    }
                 }
             }
 
@@ -57,4 +61,8 @@ class CategoryProductsRecycler : RecyclerView.Adapter<CategoryProductsRecycler.T
         val product = categoriesList[position]
         holder.bind(product)
     }
+}
+
+interface ProductItemCallback{
+    fun expandProductCategory(): String?
 }

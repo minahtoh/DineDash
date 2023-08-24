@@ -1,19 +1,18 @@
 package com.example.dinedash.activities.main
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
@@ -21,13 +20,11 @@ import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
 import com.example.dinedash.R
 import com.example.dinedash.databinding.FragmentHomeBinding
-import com.example.dinedash.models.ProductCategory
 import com.example.dinedash.models.TrendingFood
 import com.example.dinedash.recyclers.ProductsRecycler
 import com.example.dinedash.recyclers.TrendingFoodViewPager
 import com.example.dinedash.viewmodel.DineDashViewModel
 import java.util.Calendar
-import kotlin.collections.ArrayList
 import kotlin.math.abs
 
 
@@ -94,6 +91,11 @@ class HomeFragment : Fragment() {
                     recycler.submitList(it)
                 }
             }
+                recycler.setOnItemClickListener {
+                    val args = it
+                    val action = HomeFragmentDirections.actionHomeFragmentToProductsFragment(args)
+                    findNavController().navigate(action)
+                }
         }
 
         binding.uploadButton.setOnClickListener {
