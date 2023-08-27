@@ -21,6 +21,8 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
     private val mFireStore = FirebaseFirestore.getInstance()
     private val _productCategory = MutableLiveData<List<ProductCategory>>()
     val productCategory : LiveData<List<ProductCategory>> = _productCategory
+    private val _searchResults = MutableLiveData<List<ProductCategory>?>()
+    val searchResults : MutableLiveData<List<ProductCategory>?> = _searchResults
 
     fun getProductCategory(fragment: Fragment){
         viewModelScope.launch {
@@ -96,6 +98,22 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
         viewModelScope.launch {
             repository.decreaseProductQuantity(product.productItemName)
         }
+    }
+
+    fun searchForProduct(text : String?){
+            val filteredProduct = if (text.isNullOrEmpty()){
+                return
+            }
+        else{
+                _productCategory.value?.filter { product->
+                        product.productAvailable!!.any { nameValue->
+                            nameValue.productItemName.contains(text, ignoreCase = true)
+                                    || nameValue.productBrandName?.contains(text, ignoreCase = true) ?: false
+                        }
+                }
+        }
+
+        _searchResults.postValue(filteredProduct)
     }
 }
 

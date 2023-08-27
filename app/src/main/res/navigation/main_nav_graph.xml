@@ -12,7 +12,10 @@
 
         <action
             android:id="@+id/action_homeFragment_to_productsFragment"
-            app:destination="@id/productsFragment" />
+            app:destination="@id/productsFragment" >
+            <argument
+                android:name="productID" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/orderFragment"
@@ -43,7 +46,6 @@
         <argument
             android:name="productID"
             app:argType="string"
-            app:nullable="true"
             android:defaultValue=" " />
     </fragment>
     <fragment

@@ -92,7 +92,7 @@ class HomeFragment : Fragment() {
                 }
             }
                 recycler.setOnItemClickListener {
-                    val args = it
+                    val args = it!!
                     val action = HomeFragmentDirections.actionHomeFragmentToProductsFragment(args)
                     findNavController().navigate(action)
                 }

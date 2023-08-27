@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.dinedash.databinding.FragmentProductsBinding
+import com.example.dinedash.models.Product
 import com.example.dinedash.recyclers.CategoryProductsRecycler
 import com.example.dinedash.recyclers.ProductItemCallback
 import com.example.dinedash.viewmodel.DineDashViewModel
@@ -45,6 +47,49 @@ class ProductsFragment : Fragment(), ProductItemCallback {
             }
         }
 
+        showSearchResults()
+
+    }
+
+    private fun showSearchResults() {
+        binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText.isNullOrEmpty()){
+                    //Remove the fragment once the user cancels
+
+                    val resultFragment = childFragmentManager.findFragmentByTag(SearchResultsFragment::class.java.simpleName)
+                    resultFragment?.let {
+                        childFragmentManager.beginTransaction()
+                            .remove(it)
+                            .commit()
+                    }
+                    binding.fragmentContainer.visibility = View.GONE
+                    binding.productsRecycler.visibility = View.VISIBLE
+                } else{
+                    binding.productsRecycler.visibility = View.INVISIBLE
+                    theViewModel.searchForProduct(newText)
+                }
+                return true
+            }
+        })
+
+        theViewModel.searchResults.observe(viewLifecycleOwner){
+            val list = mutableListOf<Product>()
+            if (it != null) {
+                for (products in it){
+                    products.productAvailable?.let { it1 -> list.addAll(it1) }
+                }
+            }
+
+            val resultFragment = SearchResultsFragment.newInstance(list)
+            childFragmentManager.beginTransaction()
+                .replace(binding.fragmentContainer.id, resultFragment)
+                .commit()
+        }
     }
 
     override fun expandProductCategory(): String? {
