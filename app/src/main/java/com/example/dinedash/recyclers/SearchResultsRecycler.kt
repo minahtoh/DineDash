@@ -32,9 +32,17 @@ class SearchResultsRecycler:RecyclerView.Adapter<SearchResultsRecycler.TheViewHo
     override fun onBindViewHolder(holder: TheViewHolder, position: Int) {
         val product = items[position]
         holder.bind(product)
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.let { it(product) }
+        }
     }
 
     override fun getItemCount(): Int {
         return items.size
+    }
+
+    private var onItemClickListener:((Product)->Unit)? = null
+    fun setOnItemClickListener(listener:(Product) -> Unit){
+        onItemClickListener = listener
     }
 }

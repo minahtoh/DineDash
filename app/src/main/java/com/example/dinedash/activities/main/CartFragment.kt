@@ -2,13 +2,19 @@ package com.example.dinedash.activities.main
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.dinedash.R
 import com.example.dinedash.databinding.FragmentCartBinding
 import com.example.dinedash.models.Product
 import com.example.dinedash.recyclers.CartItemCallback
@@ -41,6 +47,7 @@ class CartFragment : Fragment(), CartItemCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         recycler = CartRecycler(this)
+//        showOptionsMenu()
 
         binding.apply {
             cartRecycler.apply {
@@ -51,7 +58,7 @@ class CartFragment : Fragment(), CartItemCallback {
                 }
             }
             theViewModel.getProductCount().observe(viewLifecycleOwner){
-                cartText.append("($it)")
+                cartText.text = "CART($it)"
             }
             totalPrice.apply {
                 theViewModel.getPricesList().observe(viewLifecycleOwner){ list->
@@ -61,8 +68,43 @@ class CartFragment : Fragment(), CartItemCallback {
             backButton.setOnClickListener {
                 findNavController().navigateUp()
             }
+            menuText.setOnClickListener{
+                MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Attention")
+                    .setMessage("Clear Shopping Cart? (This cannot be undone)")
+                    .setCancelable(false)
+                    .setNegativeButton("No") { _, _ -> }
+                    .setPositiveButton("Yes") { _, _ ->
+                        theViewModel.clearCart()
+                        Snackbar.
+                        make(requireView(),"Shopping cart cleared!", Snackbar.LENGTH_SHORT).
+                        show()
+                    }
+                    .show()
+            }
         }
     }
+
+
+    private fun showOptionsMenu() {
+        val menuHost: MenuHost = requireActivity()
+        menuHost.addMenuProvider(object : MenuProvider{
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.cart_menu, menu)
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                when (menuItem.itemId){
+                    R.id.clear_cart ->{
+                        return true
+                    }
+                }
+                return false
+            }
+
+        },viewLifecycleOwner)
+    }
+
 
     override fun onCartItemDeleteClicked(productId: Product) {
         showConfirmationDialog(productId,this)

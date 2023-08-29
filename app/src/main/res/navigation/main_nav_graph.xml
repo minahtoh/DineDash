@@ -66,4 +66,15 @@
         android:name="com.example.dinedash.activities.main.CartFragment"
         android:label="fragment_cart"
         tools:layout="@layout/fragment_cart" />
+    <fragment
+        android:id="@+id/searchResultsFragment"
+        android:name="com.example.dinedash.activities.main.SearchResultsFragment"
+        android:label="fragment_search_results"
+        tools:layout="@layout/fragment_search_results" >
+        <action
+            android:id="@+id/action_searchResultsFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment"
+            app:popUpTo="@id/productsFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
 </navigation>

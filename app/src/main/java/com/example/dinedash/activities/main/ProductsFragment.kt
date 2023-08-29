@@ -71,6 +71,7 @@ class ProductsFragment : Fragment(), ProductItemCallback {
                     binding.productsRecycler.visibility = View.VISIBLE
                 } else{
                     binding.productsRecycler.visibility = View.INVISIBLE
+                    binding.fragmentContainer.visibility = View.VISIBLE
                     theViewModel.searchForProduct(newText)
                 }
                 return true

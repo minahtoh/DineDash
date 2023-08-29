@@ -41,8 +41,6 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
                 }
                 _productCategory.value = productList
 
-
-
             }catch (e:Exception){
                 Log.e(TAG, "getProductCategory: $e")
                 Toast.makeText(fragment.requireContext(), "Error $e occurred", Toast.LENGTH_SHORT)

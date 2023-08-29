@@ -1,11 +1,13 @@
 package com.example.dinedash.activities.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.GridLayoutManager
 import com.example.dinedash.databinding.FragmentSearchResultsBinding
 import com.example.dinedash.models.Product
 import com.example.dinedash.recyclers.SearchResultsRecycler
@@ -47,12 +49,20 @@ class SearchResultsFragment : Fragment() {
         recycler = SearchResultsRecycler()
         binding.searchRecyclerView.apply {
             adapter = recycler
-            layoutManager = LinearLayoutManager(context)
+            layoutManager = GridLayoutManager(context, 3)
+            setHasFixedSize(true)
         }
         val products = arguments?.getSerializable(ARG_PRODUCTS) as? List<Product>
         products?.let {
             recycler.submitList(it)
         }
+        recycler.setOnItemClickListener {product->
+            val action = SearchResultsFragmentDirections.actionSearchResultsFragmentToDetailsFragment(product)
+            val currentDestination = findNavController().currentDestination?.label
+            Log.d("NavigationDebug", "Current destination: $currentDestination")
+            findNavController().navigate(action)
+        }
+
     }
 
 
