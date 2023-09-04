@@ -12,9 +12,10 @@
 
         <action
             android:id="@+id/action_homeFragment_to_productsFragment"
-            app:destination="@id/productsFragment" >
-            <argument
-                android:name="productID" />
+            app:destination="@id/productsFragment"
+            app:popUpTo="@id/homeFragment"
+            app:popUpToInclusive="true">
+            <argument android:name="productID" />
         </action>
     </fragment>
     <fragment

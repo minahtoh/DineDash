@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.dinedash.R
 import com.example.dinedash.databinding.FragmentProductsBinding
 import com.example.dinedash.models.Product
 import com.example.dinedash.recyclers.CategoryProductsRecycler
@@ -67,11 +68,12 @@ class ProductsFragment : Fragment(), ProductItemCallback {
                             .remove(it)
                             .commit()
                     }
-                    binding.fragmentContainer.visibility = View.GONE
+                    binding.fragmentContainerProducts.visibility = View.GONE
                     binding.productsRecycler.visibility = View.VISIBLE
+
                 } else{
                     binding.productsRecycler.visibility = View.INVISIBLE
-                    binding.fragmentContainer.visibility = View.VISIBLE
+                    binding.fragmentContainerProducts.visibility = View.VISIBLE
                     theViewModel.searchForProduct(newText)
                 }
                 return true
@@ -88,9 +90,11 @@ class ProductsFragment : Fragment(), ProductItemCallback {
 
             val resultFragment = SearchResultsFragment.newInstance(list)
             childFragmentManager.beginTransaction()
-                .replace(binding.fragmentContainer.id, resultFragment)
+                .replace(R.id.fragment_container_products, resultFragment)
+                .setReorderingAllowed(true)
+                .addToBackStack("searchResultsFragment")
                 .commit()
-        }
+            }
     }
 
     override fun expandProductCategory(): String? {

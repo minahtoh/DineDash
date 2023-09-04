@@ -24,6 +24,8 @@ import com.example.dinedash.models.TrendingFood
 import com.example.dinedash.recyclers.ProductsRecycler
 import com.example.dinedash.recyclers.TrendingFoodViewPager
 import com.example.dinedash.viewmodel.DineDashViewModel
+import com.example.dinedash.viewmodel.LoadingState
+import com.facebook.shimmer.ShimmerFrameLayout
 import java.util.Calendar
 import kotlin.math.abs
 
@@ -38,6 +40,7 @@ class HomeFragment : Fragment() {
     private lateinit var recycler: ProductsRecycler
     private lateinit var trendingViewPager: ViewPager2
     private lateinit var handler : Handler
+    private lateinit var shimmerView: ShimmerFrameLayout
     private val theViewModel: DineDashViewModel by activityViewModels()
     private var backPressedTime : Long = 0
     private val runnable = Runnable{
@@ -81,27 +84,51 @@ class HomeFragment : Fragment() {
             } )
         }
 
-        recycler = ProductsRecycler()
-        binding.productTypeRecycler.apply {
-            adapter = recycler
-            layoutManager = GridLayoutManager(requireContext(),4)
-            theViewModel.apply {
-                getProductCategory(this@HomeFragment)
-                productCategory.observe(viewLifecycleOwner){
-                    recycler.submitList(it)
-                }
+        theViewModel. apply {
+            getProductCategory(this@HomeFragment)
+            homeLoadingState.observe(viewLifecycleOwner){
+            when(it){
+                LoadingState.LOADING -> applyShimmer()
+                LoadingState.SUCCESSFUL -> setupRecycler()
+                LoadingState.ERROR -> Unit
             }
-                recycler.setOnItemClickListener {
-                    val args = it!!
-                    val action = HomeFragmentDirections.actionHomeFragmentToProductsFragment(args)
-                    findNavController().navigate(action)
-                }
-        }
+        }}
+
+
 
         binding.uploadButton.setOnClickListener {
 //            theViewModel.uploadGoods(this)
         }
 
+    }
+
+    private fun applyShimmer() {
+        shimmerView = binding.homeShimmer
+        shimmerView.startShimmer()
+    }
+
+    private fun setupRecycler() {
+        shimmerView = binding.homeShimmer
+       shimmerView.apply {
+            stopShimmer()
+            visibility = View.INVISIBLE
+        }
+        recycler = ProductsRecycler()
+        binding.productTypeRecycler.apply {
+            adapter = recycler
+            layoutManager = GridLayoutManager(requireContext(),4)
+            visibility = View.VISIBLE
+            theViewModel.apply {
+                productCategory.observe(viewLifecycleOwner){
+                    recycler.submitList(it)
+                }
+            }
+            recycler.setOnItemClickListener {
+                val args = it!!
+                val action = HomeFragmentDirections.actionHomeFragmentToProductsFragment(args)
+                findNavController().navigate(action)
+            }
+        }
     }
 
 

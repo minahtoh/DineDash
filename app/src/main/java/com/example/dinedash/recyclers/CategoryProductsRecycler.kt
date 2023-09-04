@@ -41,10 +41,15 @@ class CategoryProductsRecycler(private val callback: ProductItemCallback) : Recy
                             notifyItemChanged(layoutPosition)
                         }
                     }
-
+                    // Handle when navigated-to from home fragment
                     val navProduct = product.getProductCategoryByID(categoriesList, callback.expandProductCategory() ?:"")
                     if (navProduct != null) {
                         navProduct.isExpandable = true
+                       binding.parentConstraint.setOnClickListener {
+                            navProduct.isExpandable = !navProduct.isExpandable
+
+                            notifyItemChanged(layoutPosition)
+                        }
                     }
                 }
             }

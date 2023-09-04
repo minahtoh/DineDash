@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
+enum class LoadingState{ LOADING, SUCCESSFUL, ERROR }
 class DineDashViewModel(private val repository: DineDashRepository): ViewModel() {
     private val TAG = "ViewModel"
     private val mFireStore = FirebaseFirestore.getInstance()
@@ -23,9 +24,13 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
     val productCategory : LiveData<List<ProductCategory>> = _productCategory
     private val _searchResults = MutableLiveData<List<ProductCategory>?>()
     val searchResults : MutableLiveData<List<ProductCategory>?> = _searchResults
+    private val _homeLoadingState = MutableLiveData<LoadingState>()
+    val homeLoadingState : LiveData<LoadingState> = _homeLoadingState
 
     fun getProductCategory(fragment: Fragment){
         viewModelScope.launch {
+            _homeLoadingState.postValue(LoadingState.LOADING)
+
             try {
                 val snapshot = mFireStore.collection("warehouse").get().await()
                 val productList = mutableListOf<ProductCategory>()
@@ -41,10 +46,12 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
                 }
                 _productCategory.value = productList
 
+                _homeLoadingState.postValue(LoadingState.SUCCESSFUL)
             }catch (e:Exception){
                 Log.e(TAG, "getProductCategory: $e")
                 Toast.makeText(fragment.requireContext(), "Error $e occurred", Toast.LENGTH_SHORT)
                     .show()
+                _homeLoadingState.postValue(LoadingState.ERROR)
             }
 
         }

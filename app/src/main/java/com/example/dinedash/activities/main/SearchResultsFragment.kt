@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.dinedash.R
 import com.example.dinedash.databinding.FragmentSearchResultsBinding
 import com.example.dinedash.models.Product
 import com.example.dinedash.recyclers.SearchResultsRecycler
@@ -59,8 +60,10 @@ class SearchResultsFragment : Fragment() {
         recycler.setOnItemClickListener {product->
             val action = SearchResultsFragmentDirections.actionSearchResultsFragmentToDetailsFragment(product)
             val currentDestination = findNavController().currentDestination?.label
+
+            findNavController().popBackStack(R.id.searchResultsFragment, true)
             Log.d("NavigationDebug", "Current destination: $currentDestination")
-            findNavController().navigate(action)
+            //findNavController().navigate(action)
         }
 
     }
