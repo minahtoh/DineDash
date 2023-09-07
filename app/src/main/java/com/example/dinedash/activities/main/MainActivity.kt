@@ -34,7 +34,8 @@ class MainActivity : AppCompatActivity() {
         //destination?.addArgument("user", NavArgument.Builder().setDefaultValue(user).build())
 
         navController.addOnDestinationChangedListener{_, destination, _ ->
-            if (destination.id == R.id.detailsFragment || destination.id == R.id.cartFragment) {
+            if (destination.id == R.id.detailsFragment || destination.id == R.id.cartFragment
+                || destination.id == R.id.checkoutFragment) {
                 // Hide the bottom navigation bar
                 binding.bottomNavView.visibility = View.GONE
             } else {

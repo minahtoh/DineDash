@@ -22,9 +22,10 @@
             android:textSize="20sp"
             android:layout_gravity="center"/>
         <TextView
+            android:id="@+id/back_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
+            android:text="Back"
             android:layout_gravity="start"/>
     </androidx.appcompat.widget.Toolbar>
     <ScrollView
@@ -32,6 +33,7 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:padding="5dp"
         >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -43,174 +45,194 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:text="Order Summary:"/>
-            <ListView
-                android:id="@+id/order_list"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_marginTop="5dp"
+                android:textStyle="bold"
+                android:text="Order Summary"/>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/summary_cardview"
                 app:layout_constraintTop_toBottomOf="@+id/listText"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"/>
-            <com.example.dinedash.utils.DineDashTextView
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp">
+            <com.example.dinedash.utils.DineDashTextView
+                android:id="@+id/subtotal"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Subtotal :"/>
+            <com.example.dinedash.utils.DineDashTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5000"
+                android:id="@+id/subtotalText"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/subtotal"/>
+            <com.example.dinedash.utils.DineDashTextView
+                android:id="@+id/delivery"
+                app:layout_constraintTop_toBottomOf="@+id/subtotal"
+                app:layout_constraintStart_toStartOf="@+id/subtotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="Delivery :"/>
+                <com.example.dinedash.utils.DineDashTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/deliveryText"
+                    android:text="5000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/delivery"/>
+                <com.example.dinedash.utils.DineDashTextView
+                app:layout_constraintTop_toBottomOf="@+id/delivery"
+                app:layout_constraintStart_toStartOf="@+id/subtotal"
+                android:layout_width="wrap_content"
+                android:id="@+id/total"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:text="Total :"/>
+                <com.example.dinedash.utils.DineDashTextView
+                    android:id="@+id/totalPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5000"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/total"/>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+
+            <com.example.dinedash.utils.DineDashTextView
+                android:id="@+id/disclaimer_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/summary_cardview"
+                android:text="Please confirm and submit your order"/>
+            <com.example.dinedash.utils.DineDashTextView
+                android:id="@+id/disclaimer_text2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="5dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/disclaimer_text"
+                android:text="By clicking submit order, you agree to Terms of Use and Privacy Policy"/>
+
+            <com.example.dinedash.utils.DineDashTextView
+                android:id="@+id/payment_summaryText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Payment Summary"
+                android:layout_marginTop="15dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/disclaimer_text2"/>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/payment_summary"
+                app:layout_constraintTop_toBottomOf="@id/payment_summaryText"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp">
+                <com.example.dinedash.utils.DineDashTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="3dp"
+                    android:layout_marginTop="3dp"
+                    android:text="2323009494885859"/>
+                <com.example.dinedash.utils.DineDashTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="3dp"
+                    android:layout_marginTop="3dp"
+                    android:text="06/25"
+                    android:layout_gravity="end"/>
+            </androidx.cardview.widget.CardView>
+            <com.example.dinedash.utils.DineDashTextView
+                android:layout_marginTop="15dp"
                 android:id="@+id/address_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Select Address"
-                app:layout_constraintTop_toBottomOf="@+id/order_list"
-                app:layout_constraintStart_toStartOf="@+id/shippingText"/>
-            <ImageView
-                android:id="@+id/address_selector"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
-                android:src="@drawable/baseline_add_location_24"
-                app:layout_constraintTop_toBottomOf="@+id/address_text"
-                app:layout_constraintStart_toStartOf="@id/address_text"/>
-
-            <com.example.dinedash.utils.DineDashTextView
-                android:id="@+id/shippingText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Shipping Cost:"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                app:layout_constraintTop_toBottomOf="@+id/address_selector"
-                app:layout_constraintStart_toStartOf="parent"
-                />
-            <com.example.dinedash.utils.DineDashTextView
-                android:id="@+id/shipping_cost"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="3500"
-                android:layout_marginEnd="5dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/shippingText"/>
+                android:text="Shipping Address"
+                app:layout_constraintTop_toBottomOf="@+id/payment_summary"
+                app:layout_constraintStart_toStartOf="parent"/>
 
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/payment_card_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:id="@+id/address_cardview"
+                app:layout_constraintTop_toBottomOf="@+id/address_text"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="15dp"
-                app:layout_constraintTop_toBottomOf="@+id/shipping_cost">
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:padding="5dp">
                     <com.example.dinedash.utils.DineDashTextView
-                        android:id="@+id/payment_method_text"
+                        android:id="@+id/name"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Payment Method:"
                         app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"/>
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:src="@drawable/baseline_keyboard_double_arrow_down"
-                        android:layout_marginEnd="10dp"/>
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/payment_method_text">
+                        android:layout_marginTop="3dp"
+                        android:textStyle="bold"
+                        android:text="Name"/>
+                    <com.example.dinedash.utils.DineDashTextView
+                        android:id="@+id/nameText"
+                        app:layout_constraintTop_toTopOf="@+id/name"
+                        android:layout_width="wrap_content"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Olawoyin"/>
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/card_holder_name"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:layout_width="match_parent"
-                                android:hint="Card Name"
-                                android:layout_height="match_parent"
-                                />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/card_number"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            app:layout_constraintTop_toBottomOf="@+id/card_holder_name">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:layout_width="match_parent"
-                                android:hint="Card Number"
-                                android:inputType="number"
-                                android:layout_height="match_parent" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/expiry_date"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="20dp"
-                            app:layout_constraintEnd_toStartOf="@+id/guideline"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/card_number">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:layout_width="match_parent"
-                                android:hint="Expiry Date"
-                                android:layout_height="match_parent" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:id="@+id/cvv"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginStart="20dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toEndOf="@+id/guideline"
-                            app:layout_constraintTop_toBottomOf="@+id/card_number">
-
-                            <com.google.android.material.textfield.TextInputEditText
-                                android:layout_width="match_parent"
-                                android:hint="CVV"
-                                android:inputType="numberPassword"
-                                android:layout_height="match_parent" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <androidx.constraintlayout.widget.Guideline
-                            android:id="@+id/guideline"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintGuide_end="201dp"
-                            app:layout_constraintHorizontal_bias="0.5"
-                            app:layout_constraintStart_toStartOf="parent" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                      <com.example.dinedash.utils.DineDashTextView
+                        android:id="@+id/street"
+                        app:layout_constraintTop_toBottomOf="@+id/name"
+                        app:layout_constraintStart_toStartOf="@+id/name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:text="Street"/>
+                    <com.example.dinedash.utils.DineDashTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/streetName"
+                        android:text="Olatunbosun"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/nameText"/>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
+
+
             <com.example.dinedash.utils.DineDashButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/payment_card_view"
+                app:layout_constraintTop_toBottomOf="@+id/address_cardview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:text="SUBMIT ORDER"
-                android:layout_marginTop="10dp"
-                />
+                android:layout_marginTop="10dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

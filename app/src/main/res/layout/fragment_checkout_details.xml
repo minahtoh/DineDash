@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".activities.main.checkout.CheckoutFragment">
+    tools:context=".activities.main.checkout.CheckoutDetailsFragment">
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -22,6 +22,7 @@
             android:textSize="20sp"
             android:layout_gravity="center"/>
         <TextView
+            android:id="@+id/cancel_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Cancel"
@@ -35,7 +36,7 @@
         >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:padding="5dp"
+            android:padding="10dp"
             android:layout_height="wrap_content">
             <com.example.dinedash.utils.DineDashTextView
                 android:id="@+id/listText"
@@ -203,13 +204,14 @@
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
             <com.example.dinedash.utils.DineDashButton
+                android:id="@+id/continue_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/payment_card_view"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:text="CONTINUE"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="20dp"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

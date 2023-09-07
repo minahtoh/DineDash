@@ -82,6 +82,9 @@ class CartFragment : Fragment(), CartItemCallback {
                     }
                     .show()
             }
+            checkoutButton.setOnClickListener {
+                findNavController().navigate(CartFragmentDirections.actionCartFragmentToCheckoutFragment())
+            }
         }
     }
 
