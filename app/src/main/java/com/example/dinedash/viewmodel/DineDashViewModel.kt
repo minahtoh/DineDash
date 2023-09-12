@@ -8,12 +8,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.example.dinedash.models.Order
 import com.example.dinedash.models.PaymentDetails
 import com.example.dinedash.models.Product
 import com.example.dinedash.models.ProductCategory
 import com.example.dinedash.models.ProductType
 import com.example.dinedash.repository.DineDashRepository
 import com.google.firebase.firestore.FirebaseFirestore
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -28,6 +30,12 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
     private val _homeLoadingState = MutableLiveData<LoadingState>()
     val homeLoadingState : LiveData<LoadingState> = _homeLoadingState
     val paymentDetails = MutableLiveData<PaymentDetails>()
+    private val _ordersList = MutableLiveData<List<Order>>()
+    val ordersList : LiveData<List<Order>> = _ordersList
+    private val _orderLoadingState = MutableLiveData<LoadingState>()
+    val orderLoadingState : LiveData<LoadingState> = _orderLoadingState
+    private val _submissionLoadingState = MutableLiveData<LoadingState>()
+    val submissionLoadingState : LiveData<LoadingState> = _submissionLoadingState
 
     fun getProductCategory(fragment: Fragment){
         viewModelScope.launch {
@@ -123,39 +131,42 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
         _searchResults.postValue(filteredProduct)
     }
     fun uploadGoods(fragment: Fragment){
-        val productList = listOf(
+        viewModelScope.launch(Dispatchers.IO) {
+            _submissionLoadingState.postValue(LoadingState.LOADING)
+            val productList = repository.returnShoppingCartList()
+            val paymentDetails = paymentDetails.value!!
+            val orderTime = System.currentTimeMillis()
+            val orderTaken = Order(orderTime,paymentDetails,productList)
 
-            Product(
-                "WEYON",
-                "32 Inches LED TV (32WAN) - Black +1 Year Warranty",
-                "",
-                63300,
-                0.0,
-                9
-            ),
-        )
+                mFireStore.collection("/Orders").add(orderTaken)
+                    .addOnSuccessListener {
+                            Toast.makeText(fragment.requireContext(), "Your Order has been successfully submitted!", Toast.LENGTH_SHORT)
+                                .show()
+                            _submissionLoadingState.postValue(LoadingState.SUCCESSFUL)
+                    }.addOnFailureListener {
+                            Toast.makeText(fragment.requireContext(), "Failed to submit order, $it occurred", Toast.LENGTH_SHORT)
+                                .show()
+                            _submissionLoadingState.postValue(LoadingState.SUCCESSFUL)
+                    }
 
-        for (product in productList) {
-            val productMap = mapOf(
-                "productBrandName" to product.productBrandName,
-                "productItemName" to product.productItemName,
-                "productPrice" to product.productPrice,
-                "productImage" to product.productImage,
-                "productRating" to product.productRating,
-                "numberLeft" to product.numberLeft,
-            )
-
-            mFireStore.collection("/warehouse/Television/products").add(productMap)
-                .addOnSuccessListener {
-                    Toast.makeText(fragment.requireContext(), "Successfully uploaded $it", Toast.LENGTH_SHORT)
-                        .show()
-                }.addOnFailureListener {
-                    Toast.makeText(fragment.requireContext(), "Failed to upload, $it occurred", Toast.LENGTH_SHORT)
-                        .show()
-                }
         }
-
     }
+
+    fun getOrdersList(fragment: Fragment){
+        viewModelScope.launch {
+            _orderLoadingState.postValue(LoadingState.LOADING)
+            try {
+                val list = mFireStore.collection("Orders").get().await().toObjects(Order::class.java)
+                _ordersList.postValue(list)
+                _orderLoadingState.postValue(LoadingState.SUCCESSFUL)
+            }catch (e:Exception){
+                Log.e(TAG, "getOrdersList: $e")
+                _orderLoadingState.postValue(LoadingState.ERROR)
+                Toast.makeText(fragment.requireContext(),"Error $e occurred",Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
 }
 
 

@@ -22,6 +22,7 @@ class CheckoutRecycler:RecyclerView.Adapter<CheckoutRecycler.TheViewHolder>() {
                     binding.apply {
                         productName.text = product.productItemName
                         quantity.text = "${product.quantity}X"
+                        productPrice.text = (product.productPrice!! * product.quantity).toString()
                     }
                 }
             }

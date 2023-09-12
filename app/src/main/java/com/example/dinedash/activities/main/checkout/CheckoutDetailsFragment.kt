@@ -37,6 +37,7 @@ class CheckoutDetailsFragment : Fragment() {
         recycler = CheckoutRecycler()
         binding.apply {
             continueButton.setOnClickListener {
+                getPaymentDetails()
                 (parentFragment as? CheckoutFragment)?.navigateToSummaryPage()
             }
             cancelText.setOnClickListener {
@@ -49,7 +50,7 @@ class CheckoutDetailsFragment : Fragment() {
                     recycler.submitList(it)
                 }
             }
-            getPaymentDetails()
+
         }
 
     }

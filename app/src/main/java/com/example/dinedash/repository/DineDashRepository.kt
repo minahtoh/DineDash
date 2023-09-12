@@ -6,6 +6,7 @@ import com.example.dinedash.models.Product
 class DineDashRepository(private val database: DineDashDatabase) {
 
     fun getShoppingCartList() = database.getDao().getCartList()
+    fun returnShoppingCartList() = database.getDao().returnCartList()
 
     fun getTotalProductCount() = database.getDao().getTotalPrice()
 

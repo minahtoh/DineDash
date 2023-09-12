@@ -6,11 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import com.example.dinedash.databinding.FragmentCheckoutSummaryBinding
 import com.example.dinedash.utils.Constants.DELIVERY_FEE
+import com.example.dinedash.utils.DineDashProgressBar
 import com.example.dinedash.viewmodel.DineDashViewModel
+import com.example.dinedash.viewmodel.LoadingState
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.google.android.material.snackbar.Snackbar
 
 
 /**
@@ -56,6 +58,23 @@ class CheckoutSummaryFragment : Fragment() {
             }
             submitButton.setOnClickListener {
                 submitOrder()
+                theViewModel.submissionLoadingState.observe(viewLifecycleOwner){
+                    when(it){
+                        LoadingState.LOADING -> {
+                            DineDashProgressBar.show(requireContext())
+                        }
+                        LoadingState.SUCCESSFUL -> {
+                            DineDashProgressBar.hide()
+                            theViewModel.clearCart()
+                            val action = CheckoutFragmentDirections.actionCheckoutFragmentToHomeFragment()
+                            findNavController().navigate(action)
+                        }
+
+                        else -> {
+                            DineDashProgressBar.hide()
+                        }
+                    }
+                }
             }
         }
     }
@@ -67,10 +86,8 @@ class CheckoutSummaryFragment : Fragment() {
         .setCancelable(false)
         .setNegativeButton("No") { _, _ -> }
         .setPositiveButton("Yes") { _, _ ->
+            theViewModel.uploadGoods(this)
 
-            Snackbar.
-            make(requireView(),"Your Order has been submitted successfully!", Snackbar.LENGTH_SHORT).
-            show()
         }
         .show()
     }

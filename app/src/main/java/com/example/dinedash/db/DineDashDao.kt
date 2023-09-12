@@ -26,6 +26,8 @@ interface DineDashDao {
 
     @Query("Select * from productsTable Order by `productItemName` Asc" )
     fun getCartList(): LiveData<List<Product>>
+    @Query("Select * from productsTable Order by `productItemName` Asc" )
+    fun returnCartList(): List<Product>
 
     @Query("Select COUNT(*) FROM productsTable")
     fun getTotalPrice():LiveData<Int>
