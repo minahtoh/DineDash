@@ -7,6 +7,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dinedash.databinding.OrdersCardViewBinding
 import com.example.dinedash.models.Order
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class OrderRecycler: RecyclerView.Adapter<OrderRecycler.TheViewHolder>() {
     private val orderList: MutableList<Order> = mutableListOf()
@@ -33,7 +38,11 @@ class OrderRecycler: RecyclerView.Adapter<OrderRecycler.TheViewHolder>() {
                         visibility = if (expandable) View.VISIBLE else View.GONE
                     }
                     binding.apply {
-
+                        val time = LocalDateTime.ofInstant(Instant.ofEpochMilli(order.orderId), ZoneId.systemDefault())
+                        val formatter = DateTimeFormatter.ofPattern("dd, MMM yyyy", Locale.getDefault())
+                        val formattedDate = time.format(formatter)
+                        orderDate.text = formattedDate
+                        totalCostPrice.text = order.totalPrice.toString()
                     }
                 }
             }

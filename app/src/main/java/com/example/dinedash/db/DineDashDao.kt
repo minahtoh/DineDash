@@ -31,6 +31,8 @@ interface DineDashDao {
 
     @Query("Select COUNT(*) FROM productsTable")
     fun getTotalPrice():LiveData<Int>
+    @Query("Select productPrice * quantity FROM productsTable")
+    fun returnPrices(): List<Double>
 
     @Query("Select productPrice * quantity FROM productsTable")
     fun getListOfPrices(): LiveData<List<Double>>

@@ -11,6 +11,7 @@ class DineDashRepository(private val database: DineDashDatabase) {
     fun getTotalProductCount() = database.getDao().getTotalPrice()
 
     fun getPrices() = database.getDao().getListOfPrices()
+    fun returnPrices() = database.getDao().returnPrices()
 
     suspend fun increaseProductQuantity(productName:String){
         val product = database.getDao().getProduct(productName)

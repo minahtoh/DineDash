@@ -17,8 +17,8 @@
         <ImageView
             android:id="@+id/product_image"
             android:src="@drawable/baseline_fastfood_24"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:scaleType="centerCrop"/>
     </androidx.cardview.widget.CardView>
     <com.example.dinedash.utils.DineDashTextView
@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Television"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image_card"

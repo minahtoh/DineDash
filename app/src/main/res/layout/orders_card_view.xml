@@ -47,6 +47,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/status_text"
                 app:layout_constraintStart_toStartOf="parent"/>
             <com.example.dinedash.utils.DineDashTextView
+                android:id="@+id/total_cost_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="5000"

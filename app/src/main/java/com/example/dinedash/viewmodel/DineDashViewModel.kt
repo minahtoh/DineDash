@@ -134,11 +134,12 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
         viewModelScope.launch(Dispatchers.IO) {
             _submissionLoadingState.postValue(LoadingState.LOADING)
             val productList = repository.returnShoppingCartList()
+            val orderCost = repository.returnPrices().sum()
             val paymentDetails = paymentDetails.value!!
             val orderTime = System.currentTimeMillis()
-            val orderTaken = Order(orderTime,paymentDetails,productList)
+            val orderTaken = Order(orderTime,orderCost,paymentDetails,productList)
 
-                mFireStore.collection("/Orders").add(orderTaken)
+            mFireStore.collection("/Orders").add(orderTaken)
                     .addOnSuccessListener {
                             Toast.makeText(fragment.requireContext(), "Your Order has been successfully submitted!", Toast.LENGTH_SHORT)
                                 .show()

@@ -48,5 +48,4 @@ class CheckoutFragment : Fragment() {
     fun navigateToDetailsPage(){
         binding.detailsViewpager.currentItem = 0
     }
-
 }

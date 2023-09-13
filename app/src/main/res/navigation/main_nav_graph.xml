@@ -13,7 +13,7 @@
         <action
             android:id="@+id/action_homeFragment_to_productsFragment"
             app:destination="@id/productsFragment"
-            app:popUpTo="@id/homeFragment"
+            app:popUpTo="@id/productsFragment"
             app:popUpToInclusive="true">
             <argument android:name="productID" />
         </action>
@@ -90,7 +90,7 @@
         <action
             android:id="@+id/action_checkoutFragment_to_homeFragment"
             app:destination="@id/homeFragment"
-            app:popUpTo="@id/checkoutFragment"
+            app:popUpTo="@id/homeFragment"
             app:popUpToInclusive="true" />
     </fragment>
 </navigation>
