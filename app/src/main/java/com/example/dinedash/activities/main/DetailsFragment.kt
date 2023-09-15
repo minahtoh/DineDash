@@ -58,6 +58,11 @@ class DetailsFragment : Fragment() {
             buyButton.setOnClickListener {
                 theViewModel.addToCart(product, this@DetailsFragment)
             }
+            cartCount.apply {
+                theViewModel.getProductCount().observe(viewLifecycleOwner){
+                    text = it.toString()
+                }
+            }
         }
     }
 

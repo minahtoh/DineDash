@@ -16,6 +16,7 @@ import com.example.dinedash.models.ProductType
 import com.example.dinedash.repository.DineDashRepository
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
@@ -138,7 +139,7 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
             val paymentDetails = paymentDetails.value!!
             val orderTime = System.currentTimeMillis()
             val orderTaken = Order(orderTime,orderCost,paymentDetails,productList)
-
+            delay(1000)
             mFireStore.collection("/Orders").add(orderTaken)
                     .addOnSuccessListener {
                             Toast.makeText(fragment.requireContext(), "Your Order has been successfully submitted!", Toast.LENGTH_SHORT)
@@ -147,7 +148,7 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
                     }.addOnFailureListener {
                             Toast.makeText(fragment.requireContext(), "Failed to submit order, $it occurred", Toast.LENGTH_SHORT)
                                 .show()
-                            _submissionLoadingState.postValue(LoadingState.SUCCESSFUL)
+                            _submissionLoadingState.postValue(LoadingState.ERROR)
                     }
 
         }
