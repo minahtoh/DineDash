@@ -2,7 +2,6 @@ package com.example.dinedash.utils
 
 import android.app.Dialog
 import android.content.Context
-import android.view.View
 import com.example.dinedash.R
 
 object DineDashProgressBar {
@@ -14,6 +13,16 @@ object DineDashProgressBar {
             setContentView(R.layout.progress_dialog)
             setCancelable(false)
             setCanceledOnTouchOutside(false)
+            show()
+        }
+    }
+
+    fun showWarning(context: Context){
+        progressBar = Dialog(context)
+        progressBar?.apply {
+            setContentView(R.layout.progress_dialog)
+            setTitle("Warning!!")
+            setCancelable(false)
             show()
         }
     }

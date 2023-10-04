@@ -112,7 +112,7 @@ class CheckoutSummaryFragment : Fragment() {
     private fun createNotificationChannel(){
         if(Build.VERSION.SDK_INT > Build.VERSION_CODES.O){
             val name = "Notifications"
-            val descriptionText = "Order Submitted!"
+            val descriptionText = "Orders and Sales"
             val importance = NotificationManager.IMPORTANCE_DEFAULT
             val channel = NotificationChannel(CHANNEL_ID,name,importance).apply {
                 description = descriptionText

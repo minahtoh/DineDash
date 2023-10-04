@@ -23,9 +23,9 @@ import com.example.dinedash.databinding.FragmentHomeBinding
 import com.example.dinedash.models.TrendingFood
 import com.example.dinedash.recyclers.ProductsRecycler
 import com.example.dinedash.recyclers.TrendingFoodViewPager
+import com.example.dinedash.utils.DineDashProgressBar
 import com.example.dinedash.viewmodel.DineDashViewModel
 import com.example.dinedash.viewmodel.LoadingState
-import com.facebook.shimmer.ShimmerFrameLayout
 import java.util.Calendar
 import kotlin.math.abs
 
@@ -40,7 +40,6 @@ class HomeFragment : Fragment() {
     private lateinit var recycler: ProductsRecycler
     private lateinit var trendingViewPager: ViewPager2
     private lateinit var handler : Handler
-    private lateinit var shimmerView: ShimmerFrameLayout
     private val theViewModel: DineDashViewModel by activityViewModels()
     private var backPressedTime : Long = 0
     private val runnable = Runnable{
@@ -90,7 +89,7 @@ class HomeFragment : Fragment() {
             when(it){
                 LoadingState.LOADING -> applyShimmer()
                 LoadingState.SUCCESSFUL -> setupRecycler()
-                LoadingState.ERROR -> Unit
+                LoadingState.ERROR -> showErrorDialog()
             }
         }}
 
@@ -102,14 +101,16 @@ class HomeFragment : Fragment() {
 
     }
 
+    private fun showErrorDialog() {
+        DineDashProgressBar.showWarning(requireContext())
+    }
+
     private fun applyShimmer() {
-        shimmerView = binding.homeShimmer
-        shimmerView.startShimmer()
+        binding.homeShimmer.startShimmer()
     }
 
     private fun setupRecycler() {
-        shimmerView = binding.homeShimmer
-       shimmerView.apply {
+        binding.homeShimmer.apply {
             stopShimmer()
             visibility = View.INVISIBLE
         }

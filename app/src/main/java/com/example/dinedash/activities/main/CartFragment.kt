@@ -19,9 +19,13 @@ import com.example.dinedash.databinding.FragmentCartBinding
 import com.example.dinedash.models.Product
 import com.example.dinedash.recyclers.CartItemCallback
 import com.example.dinedash.recyclers.CartRecycler
+import com.example.dinedash.utils.DineDashProgressBar
 import com.example.dinedash.viewmodel.DineDashViewModel
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 /**
@@ -83,7 +87,15 @@ class CartFragment : Fragment(), CartItemCallback {
                     .show()
             }
             checkoutButton.setOnClickListener {
-                findNavController().navigate(CartFragmentDirections.actionCartFragmentToCheckoutFragment())
+                MainScope().launch {
+                    try {
+                        DineDashProgressBar.show(requireContext())
+                        delay(3000)
+                        findNavController().navigate(CartFragmentDirections.actionCartFragmentToCheckoutFragment())
+                    } finally {
+                        DineDashProgressBar.hide()
+                    }
+                }
             }
         }
     }

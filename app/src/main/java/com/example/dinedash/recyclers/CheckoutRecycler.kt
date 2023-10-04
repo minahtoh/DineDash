@@ -8,7 +8,7 @@ import com.example.dinedash.models.Product
 
 class CheckoutRecycler:RecyclerView.Adapter<CheckoutRecycler.TheViewHolder>() {
 
-    private val orderList: MutableList<Product> = mutableListOf()
+     val orderList: MutableList<Product> = mutableListOf()
 
     fun submitList(newItems: List<Product>) {
         orderList.clear()

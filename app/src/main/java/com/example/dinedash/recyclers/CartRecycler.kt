@@ -43,9 +43,10 @@ class CartRecycler(private val callback: CartItemCallback): RecyclerView.Adapter
                         }
                         removeButton.apply {
                             if (product.quantity >= 2){
+                                isEnabled = true
                                 setOnClickListener{ callback.reduceQuantity(product) }
                             } else{
-                                removeButton.isEnabled = false
+                                isEnabled = false
                             }
 
                         }

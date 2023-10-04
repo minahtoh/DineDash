@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
@@ -22,6 +23,7 @@ class DetailsFragment : Fragment() {
         private lateinit var binding:FragmentDetailsBinding
         private val args : DetailsFragmentArgs by navArgs()
         private val theViewModel : DineDashViewModel by activityViewModels()
+        var isProductInCart = false
 
 
     override fun onCreateView(
@@ -36,6 +38,7 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val product = args.product
+        theViewModel.getProductByName(product.productItemName)
         binding.apply {
             productDescription.text = product.productBrandName + " " + product.productItemName
             productBrand.append(product.productBrandName)
@@ -48,6 +51,7 @@ class DetailsFragment : Fragment() {
             }
             starRating.apply {
                 rating = product.productRating.toInt()
+                isClickable = false
             }
             backButton.setOnClickListener {
                 findNavController().navigateUp()
@@ -55,15 +59,67 @@ class DetailsFragment : Fragment() {
             shoppingCart.setOnClickListener {
                 findNavController().navigate(DetailsFragmentDirections.actionDetailsFragmentToCartFragment())
             }
+
             buyButton.setOnClickListener {
-                theViewModel.addToCart(product, this@DetailsFragment)
+                theViewModel.apply {
+                    addToCart(product, this@DetailsFragment)
+                    getProductByName(product.productItemName)
+                }
+                isProductInCart = true
             }
+            //Check whether product already in cart
+            theViewModel.getShoppingList().observe(viewLifecycleOwner){ productList->
+                isProductInCart = productList.any {
+                    it.productItemName == product.productItemName
+                }
+                if (isProductInCart){
+                    countConstraint.visibility = View.VISIBLE
+                    buyButton.visibility = View.GONE
+                }
+            }
+
             cartCount.apply {
                 theViewModel.getProductCount().observe(viewLifecycleOwner){
                     text = it.toString()
                 }
             }
+            addButton.apply {
+                setOnClickListener {
+                    if (product.numberLeft!! > product.quantity) {
+                        addButton.isEnabled = true
+                        theViewModel.increaseQuantity(product)
+                    } else {
+                        Toast.makeText(requireContext(), "No more of this product available!",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                        addButton.isEnabled = false
+                    }
+                }
+            }
+            removeButton.apply {
+                if (product.quantity >= 2) {
+                    isEnabled = true
+                    setOnClickListener { theViewModel.reduceQuantity(product) }
+                } else {
+                    isEnabled = false
+                }
+            }
+
+
+            quantityNumber.apply {
+               theViewModel.productByName.observe(viewLifecycleOwner){ product->
+                   if (product != null) {
+                       text = product.quantity.toString()
+                   } else text = "0"
+
+               }
+            }
+
+
         }
     }
+
+
 
 }

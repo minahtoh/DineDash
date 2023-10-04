@@ -1,5 +1,6 @@
 package com.example.dinedash.recyclers
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,7 @@ import java.util.Locale
 
 class OrderRecycler: RecyclerView.Adapter<OrderRecycler.TheViewHolder>() {
     private val orderList: MutableList<Order> = mutableListOf()
-
+    private var expandable = false
     fun submitList(newItems: List<Order>) {
         orderList.clear()
         orderList.addAll(newItems)
@@ -27,15 +28,21 @@ class OrderRecycler: RecyclerView.Adapter<OrderRecycler.TheViewHolder>() {
                 fun bind(order: Order){
                     val newAdapter = CheckoutRecycler()
                     newAdapter.submitList(order.productsBought)
-                    var expandable = false
-                    binding.parentConstraint.setOnClickListener {
-                        expandable = expandable == false
-                        notifyItemChanged(layoutPosition)
+
+                    binding.apply {
+                        parentConstraint.setOnClickListener {
+                            expandable = !expandable
+                            notifyItemChanged(layoutPosition)
+                            Log.e("Order Recycler", "bind: $expandable")
+                        }
+                        orderListRecyclerLayout.apply {
+                            visibility = if (expandable) View.VISIBLE else View.GONE
+                        }
                     }
                     binding.orderListRecycler.apply {
                         adapter = newAdapter
                         layoutManager = LinearLayoutManager(context)
-                        visibility = if (expandable) View.VISIBLE else View.GONE
+                        Log.e("recyclerView", "bind: ${newAdapter.orderList}")
                     }
                     binding.apply {
                         val time = LocalDateTime.ofInstant(Instant.ofEpochMilli(order.orderId), ZoneId.systemDefault())

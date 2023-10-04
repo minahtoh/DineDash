@@ -37,6 +37,8 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
     val orderLoadingState : LiveData<LoadingState> = _orderLoadingState
     private val _submissionLoadingState = MutableLiveData<LoadingState>()
     val submissionLoadingState : LiveData<LoadingState> = _submissionLoadingState
+    private val _productByName = MutableLiveData<Product?>()
+    val productByName : LiveData<Product?> = _productByName
 
     fun getProductCategory(fragment: Fragment){
         viewModelScope.launch {
@@ -100,10 +102,16 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
         }
     }
 
+
     fun getShoppingList() = repository.getShoppingCartList()
     fun getProductCount() = repository.getTotalProductCount()
     fun getPricesList() = repository.getPrices()
-
+    fun  getProductByName(name:String){
+        viewModelScope.launch {
+           val product = repository.getProduct(name)
+            _productByName.postValue(product)
+        }
+    }
     fun increaseQuantity(product: Product){
         viewModelScope.launch {
             repository.increaseProductQuantity(product.productItemName)
@@ -140,16 +148,22 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
             val orderTime = System.currentTimeMillis()
             val orderTaken = Order(orderTime,orderCost,paymentDetails,productList)
             delay(1000)
-            mFireStore.collection("/Orders").add(orderTaken)
+            try {
+                mFireStore.collection("/Orders").add(orderTaken)
                     .addOnSuccessListener {
-                            Toast.makeText(fragment.requireContext(), "Your Order has been successfully submitted!", Toast.LENGTH_SHORT)
-                                .show()
-                            _submissionLoadingState.postValue(LoadingState.SUCCESSFUL)
+                        Toast.makeText(fragment.requireContext(), "Your Order has been successfully submitted!", Toast.LENGTH_SHORT)
+                            .show()
+                        _submissionLoadingState.postValue(LoadingState.SUCCESSFUL)
                     }.addOnFailureListener {
-                            Toast.makeText(fragment.requireContext(), "Failed to submit order, $it occurred", Toast.LENGTH_SHORT)
-                                .show()
-                            _submissionLoadingState.postValue(LoadingState.ERROR)
+                        Toast.makeText(fragment.requireContext(), "Failed to submit order, $it occurred", Toast.LENGTH_SHORT)
+                            .show()
+                        _submissionLoadingState.postValue(LoadingState.ERROR)
                     }
+            } catch (e:Exception){
+                Log.e(TAG, "uploadGoods: $e")
+                _submissionLoadingState.postValue(LoadingState.ERROR)
+            }
+
 
         }
     }

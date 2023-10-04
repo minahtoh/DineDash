@@ -12,7 +12,7 @@ class DineDashRepository(private val database: DineDashDatabase) {
 
     fun getPrices() = database.getDao().getListOfPrices()
     fun returnPrices() = database.getDao().returnPrices()
-
+    suspend fun getProduct(name:String) = database.getDao().getProduct(name)
     suspend fun increaseProductQuantity(productName:String){
         val product = database.getDao().getProduct(productName)
         if (product != null && product.numberLeft!! > product.quantity){
