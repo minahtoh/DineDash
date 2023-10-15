@@ -1,6 +1,7 @@
 package com.example.dinedash.activities.main
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.dinedash.databinding.FragmentDetailsBinding
+import com.example.dinedash.recyclers.FlashRecycler
 import com.example.dinedash.viewmodel.DineDashViewModel
 
 
@@ -23,7 +26,7 @@ class DetailsFragment : Fragment() {
         private lateinit var binding:FragmentDetailsBinding
         private val args : DetailsFragmentArgs by navArgs()
         private val theViewModel : DineDashViewModel by activityViewModels()
-        var isProductInCart = false
+        private var isProductInCart = false
 
 
     override fun onCreateView(
@@ -32,6 +35,7 @@ class DetailsFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentDetailsBinding.inflate(inflater,container, false)
+        theViewModel.getProductByName(args.product.productItemName)
         return binding.root
     }
 
@@ -83,6 +87,7 @@ class DetailsFragment : Fragment() {
                     text = it.toString()
                 }
             }
+
             addButton.apply {
                 setOnClickListener {
                     if (product.numberLeft!! > product.quantity) {
@@ -106,20 +111,26 @@ class DetailsFragment : Fragment() {
                 }
             }
 
-
             quantityNumber.apply {
-               theViewModel.productByName.observe(viewLifecycleOwner){ product->
-                   if (product != null) {
-                       text = product.quantity.toString()
-                   } else text = "0"
-
-               }
+                theViewModel.productByName.observe(viewLifecycleOwner){
+                    if (it != null){
+                        text = it.quantity.toString()
+                        Log.d("Details Fragment", "onViewCreated: ${it.quantity}")
+                    }else {
+                        text = "1"
+                    }
+                }
             }
 
-
+            viewAlsoRecycler.apply {
+                val recycler = FlashRecycler()
+                adapter = recycler
+                layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+                theViewModel.flashProducts.observe(viewLifecycleOwner){
+                    recycler.submitList(it)
+                }
+            }
         }
     }
-
-
 
 }

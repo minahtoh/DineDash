@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavArgument
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.dinedash.R
@@ -31,7 +32,7 @@ class MainActivity : AppCompatActivity() {
         val bundle = intent.extras
         val user = bundle?.getParcelable<User>("user")
         val destination = navController.graph.findNode(R.id.profileFragment)
-        //destination?.addArgument("user", NavArgument.Builder().setDefaultValue(user).build())
+        destination?.addArgument("user", NavArgument.Builder().setDefaultValue(user).build())
 
         navController.addOnDestinationChangedListener{_, destination, _ ->
             if (destination.id == R.id.detailsFragment || destination.id == R.id.cartFragment

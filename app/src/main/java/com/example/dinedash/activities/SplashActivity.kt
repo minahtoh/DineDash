@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
 import com.example.dinedash.activities.login.LoginActivity
-import com.example.dinedash.activities.main.MainActivity
 import com.example.dinedash.databinding.ActivitySplashBinding
 
 class SplashActivity: AppCompatActivity() {
@@ -22,7 +21,7 @@ class SplashActivity: AppCompatActivity() {
         binding.progressBar.apply {
             alpha =0f
             animate().setDuration(2000).alpha(1f).withEndAction{
-                val intent = Intent(this@SplashActivity, MainActivity::class.java)
+                val intent = Intent(this@SplashActivity, LoginActivity::class.java)
                 startActivity(intent)
                 finish()
             }

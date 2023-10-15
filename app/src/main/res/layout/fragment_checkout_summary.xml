@@ -34,6 +34,7 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
         android:padding="5dp"
+        android:background="@color/md_theme_dark_onSecondaryContainer"
         >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -56,6 +57,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginTop="10dp"
+                app:cardBackgroundColor="@color/md_theme_dark_surfaceTint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -143,12 +145,13 @@
                 android:id="@+id/payment_summary"
                 app:layout_constraintTop_toBottomOf="@id/payment_summaryText"
                 android:layout_width="match_parent"
-                android:layout_height="25dp"
-                app:layout_constraintStart_toStartOf="parent"
+                android:layout_height="30dp"
+                app:cardBackgroundColor="@color/md_theme_dark_surfaceTint" app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginTop="10dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp">
+                android:layout_marginStart="10dp"
+                android:padding="5dp"
+                android:layout_marginEnd="10dp">
                 <com.example.dinedash.utils.DineDashTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -180,9 +183,10 @@
                 app:layout_constraintTop_toBottomOf="@+id/address_text"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginTop="10dp"
+                app:cardBackgroundColor="@color/md_theme_dark_surfaceTint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -228,14 +232,15 @@
 
 
             <com.example.dinedash.utils.DineDashButton
-                android:layout_width="wrap_content"
+                android:layout_width="140dp"
                 android:id="@+id/submit_button"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/address_cardview"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:text="SUBMIT ORDER"
-                android:layout_marginTop="10dp" />
+                android:background="@drawable/button_background"
+                android:layout_marginTop="50dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -69,6 +69,16 @@ class CheckoutSummaryFragment : Fragment() {
                     text = total.toString()
                 }
             }
+            streetName.apply {
+                theViewModel.address.observe(viewLifecycleOwner){
+                    text = it
+                }
+            }
+            nameText.apply {
+                theViewModel.paymentDetails.observe(viewLifecycleOwner){
+                    text = it.name
+                }
+            }
             theViewModel.paymentDetails.observe(viewLifecycleOwner){
                 cardNumber.text = it.number
                 cardExpiry.text = it.expiryDate

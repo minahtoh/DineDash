@@ -5,13 +5,13 @@
         android:title="Home"
         android:id="@+id/homeFragment"/>
     <item
-        android:icon="@drawable/baseline_order"
-        android:title="Orders"
-        android:id="@+id/orderFragment"/>
-    <item
         android:icon="@drawable/baseline_production_quantity_limits"
         android:title="Products"
         android:id="@+id/productsFragment"/>
+    <item
+        android:icon="@drawable/baseline_order"
+        android:title="Orders"
+        android:id="@+id/orderFragment"/>
     <item
         android:icon="@drawable/baseline_person"
         android:title="Profile"

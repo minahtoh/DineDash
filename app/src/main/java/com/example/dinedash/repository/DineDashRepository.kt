@@ -16,16 +16,18 @@ class DineDashRepository(private val database: DineDashDatabase) {
     suspend fun increaseProductQuantity(productName:String){
         val product = database.getDao().getProduct(productName)
         if (product != null && product.numberLeft!! > product.quantity){
-            val newProduct = product.copy(quantity = product.quantity + 1 )
-            database.getDao().updateProduct(newProduct)
+            //val newProduct = product.copy(quantity = product.quantity + 1 )
+            product.quantity +=1
+            database.getDao().updateProduct(product)
         }
     }
 
     suspend fun decreaseProductQuantity(productName:String){
         val product = database.getDao().getProduct(productName)
         if (product != null ){
-            val newProduct = product.copy(quantity = product.quantity - 1 )
-            database.getDao().updateProduct(newProduct)
+//            val newProduct = product.copy(quantity = product.quantity - 1 )
+            product.quantity -=1
+            database.getDao().updateProduct(product)
         }
     }
 

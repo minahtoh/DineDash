@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -21,9 +22,9 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.dinedash.R
 import com.example.dinedash.databinding.FragmentHomeBinding
 import com.example.dinedash.models.TrendingFood
+import com.example.dinedash.recyclers.FlashRecycler
 import com.example.dinedash.recyclers.ProductsRecycler
 import com.example.dinedash.recyclers.TrendingFoodViewPager
-import com.example.dinedash.utils.DineDashProgressBar
 import com.example.dinedash.viewmodel.DineDashViewModel
 import com.example.dinedash.viewmodel.LoadingState
 import java.util.Calendar
@@ -63,46 +64,63 @@ class HomeFragment : Fragment() {
         trendingViewPager = binding.trendingFoodVP
         setupTransformer()
         setupCountdown()
+        setupFlashSales()
+        setupViewPager()
+
+
+        theViewModel. apply {
+            homeLoadingState.observe(viewLifecycleOwner){
+                when(it){
+                LoadingState.LOADING -> applyShimmer()
+                LoadingState.SUCCESSFUL -> setupRecycler()
+                LoadingState.ERROR -> showErrorDialog()
+                    }
+            }
+        }
+    }
+
+    private fun setupViewPager() {
         binding.trendingFoodVP.apply {
-            adapter = TrendingFoodViewPager(getTrendingList(),trendingViewPager)
-            offscreenPageLimit = 3
-            clipToPadding = false
-            clipChildren = false
-            getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
-            registerOnPageChangeCallback(   object : ViewPager2.OnPageChangeCallback(){
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    if(handler != null){
+        adapter = TrendingFoodViewPager(getTrendingList(),trendingViewPager)
+        offscreenPageLimit = 3
+        clipToPadding = false
+        clipChildren = false
+        getChildAt(0).overScrollMode = RecyclerView.OVER_SCROLL_NEVER
+        registerOnPageChangeCallback(   object : ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                if(handler != null){
                     handler.apply {
                         removeCallbacks(runnable)
                         postDelayed(runnable, 3000)
-                        }
                     }
+                }
 
                 }
             } )
         }
+    }
 
-        theViewModel. apply {
-            getProductCategory(this@HomeFragment)
-            homeLoadingState.observe(viewLifecycleOwner){
-            when(it){
-                LoadingState.LOADING -> applyShimmer()
-                LoadingState.SUCCESSFUL -> setupRecycler()
-                LoadingState.ERROR -> showErrorDialog()
+    private fun setupFlashSales() {
+        val recycler = FlashRecycler()
+        binding.flashSalesRv.apply {
+            adapter = recycler
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+            theViewModel.flashProducts.observe(viewLifecycleOwner){
+                recycler.submitList(it)
             }
-        }}
-
-
-
-        binding.uploadButton.setOnClickListener {
-//            theViewModel.uploadGoods(this)
+            recycler.setOnItemClickListener {
+                if (it != null){
+                    val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(it)
+                    findNavController().navigate(action)
+                }
+            }
         }
-
     }
 
     private fun showErrorDialog() {
-        DineDashProgressBar.showWarning(requireContext())
+        Toast.makeText(requireContext(), "Network Error occurred", Toast.LENGTH_SHORT)
+            .show()
     }
 
     private fun applyShimmer() {

@@ -53,6 +53,7 @@
             android:id="@+id/subtotalCV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/md_theme_dark_onSecondaryContainer"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cart_summary"
             android:layout_marginTop="10dp">
@@ -60,6 +61,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Subtotal"
+                android:layout_marginStart="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginTop="5dp"/>
             <com.example.dinedash.utils.DineDashTextView
@@ -128,7 +130,7 @@
             app:layout_constraintStart_toEndOf="@+id/call_image_button"
             android:layout_marginEnd="10dp"
             app:cornerRadius="5dp"
-            android:text="Checkout - "
+            android:text="Checkout "
             android:textSize="18sp"
             android:layout_marginStart="10dp"/>
 

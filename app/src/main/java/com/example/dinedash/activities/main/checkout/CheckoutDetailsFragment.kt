@@ -1,13 +1,16 @@
 package com.example.dinedash.activities.main.checkout
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.dinedash.databinding.AddressSelectionDialogBinding
 import com.example.dinedash.databinding.FragmentCheckoutDetailsBinding
 import com.example.dinedash.models.PaymentDetails
 import com.example.dinedash.recyclers.CheckoutRecycler
@@ -50,8 +53,46 @@ class CheckoutDetailsFragment : Fragment() {
                     recycler.submitList(it)
                 }
             }
+            addressSelector.apply {
+                setOnClickListener {
+                    setupAddressSelector()
+                    theViewModel.address.observe(viewLifecycleOwner){
+                        selectedAddress.text = it
+                    }
+                    visibility = View.INVISIBLE
+                }
+            }
 
         }
+
+    }
+
+    private fun setupAddressSelector() {
+        // Inflate the custom layout
+        val dialogBinding = AddressSelectionDialogBinding.inflate(LayoutInflater.from(requireContext()))
+
+
+// Create and configure the AlertDialog
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setView(dialogBinding.root)
+        builder.setTitle("Select an Address")
+        builder.setPositiveButton("OK") { _, _ ->
+            // Handle the selection when the OK button is clicked
+            val selectedRadioButtonId = dialogBinding.addressRadioGroup.checkedRadioButtonId
+            if (selectedRadioButtonId != -1) {
+                val selectedRadioButton = dialogBinding.root.findViewById<RadioButton>(selectedRadioButtonId)
+                val selectedAddress = selectedRadioButton.text.toString()
+                // Do something with the selected address
+                theViewModel.address.postValue(selectedAddress)
+            }
+        }
+        builder.setNegativeButton("Cancel") { _, _ ->
+            // Handle the cancellation
+        }
+        val alertDialog = builder.create()
+
+// Show the dialog
+        alertDialog.show()
 
     }
 

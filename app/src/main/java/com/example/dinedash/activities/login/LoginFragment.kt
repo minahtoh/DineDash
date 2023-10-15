@@ -1,10 +1,10 @@
 package com.example.dinedash.activities.login
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.dinedash.databinding.FragmentLoginBinding
 import com.example.dinedash.models.FireStoreClass
@@ -37,7 +37,7 @@ class LoginFragment : Fragment() {
         binding.loginButton.setOnClickListener {
             isDetailsValid()
             if (isDetailsValid()){
-                DineDashProgressBar.show(requireContext())
+                DineDashProgressBar.showLogin(requireContext())
                 loginUser()
             }else{
                 DineDashSnackBar.show(requireView(),"Invalid details, please check!", true)

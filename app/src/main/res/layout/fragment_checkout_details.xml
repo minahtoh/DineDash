@@ -32,6 +32,7 @@
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         app:layout_constraintBottom_toBottomOf="parent"
+        android:background="@color/md_theme_dark_onSecondaryContainer"
         >
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -68,6 +69,15 @@
                 android:src="@drawable/baseline_add_location_24"
                 app:layout_constraintTop_toBottomOf="@+id/address_text"
                 app:layout_constraintStart_toStartOf="@id/address_text"/>
+            <com.example.dinedash.utils.DineDashTextView
+                android:id="@+id/selected_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="20dp"
+                app:layout_constraintTop_toBottomOf="@+id/address_text"
+                app:layout_constraintStart_toStartOf="@id/address_text"
+                />
 
             <com.example.dinedash.utils.DineDashTextView
                 android:id="@+id/shippingText"
@@ -94,6 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toStartOf="parent"
+                app:cardBackgroundColor="@color/md_theme_dark_onTertiaryContainer"
                 android:layout_marginTop="15dp"
                 app:layout_constraintTop_toBottomOf="@+id/shipping_cost">
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -104,7 +115,7 @@
                         android:id="@+id/payment_method_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Payment Method:"
+                        android:text="Card Details:"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"/>
                     <ImageView
@@ -128,11 +139,12 @@
                             android:id="@+id/card_holder_name"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:padding="5dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <com.example.dinedash.utils.DineDashEditTextView
                                 android:layout_width="match_parent"
                                 android:id="@+id/card_name"
                                 android:hint="Card Name"
@@ -146,9 +158,10 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
+                            android:padding="5dp"
                             app:layout_constraintTop_toBottomOf="@+id/card_holder_name">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <com.example.dinedash.utils.DineDashEditTextView
                                 android:layout_width="match_parent"
                                 android:hint="Card Number"
                                 android:id="@+id/card_number_text"
@@ -163,11 +176,12 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:layout_marginEnd="20dp"
+                            android:padding="5dp"
                             app:layout_constraintEnd_toStartOf="@+id/guideline"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/card_number">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <com.example.dinedash.utils.DineDashEditTextView
                                 android:layout_width="match_parent"
                                 android:id="@+id/card_expiry_date"
                                 android:hint="Expiry Date"
@@ -178,6 +192,7 @@
                         <com.google.android.material.textfield.TextInputLayout
                             android:id="@+id/cvv"
                             android:layout_width="0dp"
+                            android:padding="5dp"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
                             android:layout_marginStart="20dp"
@@ -185,7 +200,7 @@
                             app:layout_constraintStart_toEndOf="@+id/guideline"
                             app:layout_constraintTop_toBottomOf="@+id/card_number">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <com.example.dinedash.utils.DineDashEditTextView
                                 android:layout_width="match_parent"
                                 android:hint="CVV"
                                 android:id="@+id/card_cvv"

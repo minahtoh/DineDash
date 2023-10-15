@@ -19,7 +19,7 @@ private lateinit var binding: ActivitySettingsBinding
      binding = ActivitySettingsBinding.inflate(layoutInflater)
      setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
+//        setSupportActionBar(binding.toolbar)
 
         binding.logoutButton.setOnClickListener {
             FirebaseAuth.getInstance().signOut()

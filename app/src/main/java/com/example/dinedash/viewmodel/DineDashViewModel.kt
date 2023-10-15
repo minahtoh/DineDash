@@ -26,6 +26,8 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
     private val mFireStore = FirebaseFirestore.getInstance()
     private val _productCategory = MutableLiveData<List<ProductCategory>>()
     val productCategory : LiveData<List<ProductCategory>> = _productCategory
+    private val _flashProducts = MutableLiveData<List<Product>>()
+    val flashProducts : LiveData<List<Product>> = _flashProducts
     private val _searchResults = MutableLiveData<List<ProductCategory>?>()
     val searchResults : MutableLiveData<List<ProductCategory>?> = _searchResults
     private val _homeLoadingState = MutableLiveData<LoadingState>()
@@ -39,14 +41,19 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
     val submissionLoadingState : LiveData<LoadingState> = _submissionLoadingState
     private val _productByName = MutableLiveData<Product?>()
     val productByName : LiveData<Product?> = _productByName
+    val address = MutableLiveData<String>()
 
-    fun getProductCategory(fragment: Fragment){
+    init {
+        getProductCategory()
+    }
+    fun getProductCategory(){
         viewModelScope.launch {
             _homeLoadingState.postValue(LoadingState.LOADING)
 
             try {
                 val snapshot = mFireStore.collection("warehouse").get().await()
                 val productList = mutableListOf<ProductCategory>()
+                val allProducts = mutableListOf<Product>()
                 for (document in snapshot){
                     val productType = document.toObject(ProductType::class.java)
                     val products = document.reference.collection("products").get().await().toObjects(Product::class.java)
@@ -56,14 +63,18 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
                         products
                     )
                     productList.add(productsType)
+                    allProducts.addAll(products)
+
                 }
                 _productCategory.value = productList
+
+//                      Flash Sales (Random 10 Products)
+                val flashProducts = allProducts.shuffled().take(8)
+                _flashProducts.postValue(flashProducts)
 
                 _homeLoadingState.postValue(LoadingState.SUCCESSFUL)
             }catch (e:Exception){
                 Log.e(TAG, "getProductCategory: $e")
-                Toast.makeText(fragment.requireContext(), "Error $e occurred", Toast.LENGTH_SHORT)
-                    .show()
                 _homeLoadingState.postValue(LoadingState.ERROR)
             }
 
@@ -163,8 +174,6 @@ class DineDashViewModel(private val repository: DineDashRepository): ViewModel()
                 Log.e(TAG, "uploadGoods: $e")
                 _submissionLoadingState.postValue(LoadingState.ERROR)
             }
-
-
         }
     }
 

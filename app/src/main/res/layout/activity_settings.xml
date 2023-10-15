@@ -32,6 +32,7 @@
   </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/manage_address_cv"
         app:layout_constraintTop_toBottomOf="@+id/app_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="50dp"
@@ -52,6 +53,100 @@
             android:layout_marginEnd="10dp"
             android:src="@drawable/baseline_keyboard_double_arrow_right"/>
     </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/manage_profile_cv"
+        app:layout_constraintTop_toBottomOf="@+id/manage_address_cv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="5dp"
+        android:layout_marginTop="10dp"
+        >
+        <com.example.dinedash.utils.DineDashTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Manage Profile"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/baseline_keyboard_double_arrow_right"/>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        app:layout_constraintTop_toBottomOf="@+id/manage_profile_cv"
+        android:layout_width="match_parent"
+        android:id="@+id/faq_cv"
+        android:layout_height="50dp"
+        android:padding="5dp"
+        android:layout_marginTop="10dp"
+        >
+        <com.example.dinedash.utils.DineDashTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="FAQ"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/baseline_keyboard_double_arrow_right"/>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        android:id="@+id/change_language_cv"
+        app:layout_constraintTop_toBottomOf="@+id/faq_cv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="5dp"
+        android:layout_marginTop="10dp"
+        >
+        <com.example.dinedash.utils.DineDashTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Change Language"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/baseline_keyboard_double_arrow_right"/>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/app_info_cv"
+        app:layout_constraintTop_toBottomOf="@+id/change_language_cv"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:padding="5dp"
+        android:layout_marginTop="10dp"
+        >
+        <com.example.dinedash.utils.DineDashTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="App Version"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="20dp"
+            />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/baseline_keyboard_double_arrow_right"/>
+    </androidx.cardview.widget.CardView>
+
     <com.example.dinedash.utils.DineDashButton
         android:id="@+id/logout_button"
         android:layout_width="wrap_content"

@@ -75,7 +75,7 @@ class CartFragment : Fragment(), CartItemCallback {
             menuText.setOnClickListener{
                 MaterialAlertDialogBuilder(requireContext())
                     .setTitle("Attention")
-                    .setMessage("Clear Shopping Cart? (This cannot be undone)")
+                    .setMessage("Clear Shopping Cart ? (This cannot be undone)")
                     .setCancelable(false)
                     .setNegativeButton("No") { _, _ -> }
                     .setPositiveButton("Yes") { _, _ ->
@@ -90,7 +90,7 @@ class CartFragment : Fragment(), CartItemCallback {
                 MainScope().launch {
                     try {
                         DineDashProgressBar.show(requireContext())
-                        delay(3000)
+                        delay(2000)
                         findNavController().navigate(CartFragmentDirections.actionCartFragmentToCheckoutFragment())
                     } finally {
                         DineDashProgressBar.hide()
@@ -137,7 +137,7 @@ class CartFragment : Fragment(), CartItemCallback {
     private fun showConfirmationDialog(product:Product, fragment: Fragment) {
         MaterialAlertDialogBuilder(requireContext())
             .setTitle("Attention")
-            .setMessage("Remove from cart?(This cannot be undone)")
+            .setMessage("Remove product from cart?")
             .setCancelable(false)
             .setNegativeButton("No") { _, _ -> }
             .setPositiveButton("Yes") { _, _ ->

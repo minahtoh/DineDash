@@ -62,7 +62,7 @@ class RegisterFragment : Fragment() {
                     confirmPasswordEt.text.toString() != passwordEt.text.toString()){
                     DineDashSnackBar.show(view, "Please confirm your password", true)
                 }else{
-                    DineDashProgressBar.show(requireContext())
+                    DineDashProgressBar.showRegistration(requireContext())
                     registerUser()
                 }
             }
@@ -82,30 +82,29 @@ class RegisterFragment : Fragment() {
 
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,password)
             .addOnCompleteListener { task: Task<AuthResult> ->
+                try {
+                    if (task.isSuccessful) {
+                        // User registration successful
+                        val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+                        val newUser = User(
+                            uid = user!!.uid,
+                            firstName = firstName,
+                            lastName = lastName,
+                            email = email)
+                        FireStoreClass().registerUser(this, newUser)}
+                }catch (e:Exception){
+                        DineDashProgressBar.hide()
+                        // Handle registration errors
+                        val exception = task.exception
+                        DineDashSnackBar.show(requireView(),exception.toString(),true)
+                        // Handle specific error cases or display an error message to the user.
+                } finally{
+                        DineDashSnackBar.show(requireView(),"Account Created Successfully!", false)
+                        findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
 
-                if (task.isSuccessful) {
-                    // User registration successful
-                    val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
-                    val newUser = User(
-                        uid = user!!.uid,
-                        firstName = firstName,
-                        lastName = lastName,
-                        email = email)
-                    FireStoreClass().registerUser(this, newUser)
+                    }
 
-//                    FirebaseAuth.getInstance().signOut()
-
-                    findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
-
-                  //  DineDashSnackBar.show(requireView(),"Account Created Successfully!", false)
-                } else {
-                    DineDashProgressBar.hide()
-                    // Handle registration errors
-                    val exception = task.exception
-                    DineDashSnackBar.show(requireView(),exception.toString(),true)
-                    // Handle specific error cases or display an error message to the user.
                 }
     }
-}
 }
 
